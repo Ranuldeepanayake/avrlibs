@@ -1,0 +1,10 @@
+#Files to ignore.
+*.atsln
+*.cproj
+*.xml
+main.c
+
+#Folders to ignore.
+Debug/
+Release/
+*.vs
