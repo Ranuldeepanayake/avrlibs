@@ -30,6 +30,10 @@ Release/
 /Timer/Timer/uart.h 
 /Timer/Timer/uart.c
 
+#Rotary Encoder
+/Rotary Encoder/Rotary Encoder/uart.h
+/Rotary Encoder/Rotary Encoder/uart.c
+
 #UART
 #BMP280
 #DS3231

@@ -88,7 +88,7 @@ main(){
 	while(1){
 		if(dht11_measure(data)!= DHT11_ERROR){
 			//Float result.
-			uint8_t temperature= dht11_get_temperature(DHT11_CELCIUS, data);
+			float temperature= dht11_get_temperature(DHT11_CELCIUS, data);
 			//Do stuff.
 			
 			//Integer result.
