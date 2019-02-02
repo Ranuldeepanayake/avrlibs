@@ -17,37 +17,37 @@ void stepper_motor_set(){
 void stepper_motor_step(uint8_t direction, uint16_t value, uint8_t unit, uint8_t speed, uint8_t mode){
 	//Unit conversion.
 	if(unit== STEPPER_MOTOR_UNIT_ANGLE && (mode== STEPPER_MOTOR_MODE_FULL_STEP || mode== STEPPER_MOTOR_MODE_WAVE_STEP)){
-		uint32_t angle_to_steps= (value* 889UL)/10000; //10000 div factor (0.0889-> 889). Had to be promoted to UL for the compiler to understand. Decimal error present.
-		value= (uint8_t) angle_to_steps;
+		uint32_t angle_to_steps= (value* STEPPER_MOTOR_FULL_STEP_STEPS_PER_DEGREE)/10000; //10000 div factor (0.0889-> 889). Had to be promoted to UL for the compiler to understand. Decimal error present.
+		value= (uint8_t) angle_to_steps;			   // 1 step/11.25 degrees= 0.0089.
 		
-		}else if(unit== STEPPER_MOTOR_UNIT_ANGLE && mode== STEPPER_MOTOR_MODE_HALF_STEP){
-		uint32_t angle_to_steps= (value* 1778UL)/10000; //10000 div factor (0.1778-> 1778). Had to be promoted to UL for the compiler to understand. Decimal error present.s
-		value= (uint8_t) angle_to_steps;
+	}else if(unit== STEPPER_MOTOR_UNIT_ANGLE && mode== STEPPER_MOTOR_MODE_HALF_STEP){
+		uint32_t angle_to_steps= (value* STEPPER_MOTOR_HALF_STEP_STEPS_PER_DEGREE)/10000; //10000 div factor (0.1778-> 1778). Had to be promoted to UL for the compiler to understand. Decimal error present.s
+		value= (uint8_t) angle_to_steps;				// 1 step/5.625 degrees= 0.1778.
 		
-		}else if(unit== STEPPER_MOTOR_UNIT_STEPS){
+	}else if(unit== STEPPER_MOTOR_UNIT_STEPS){
 		value= value;
 	}
 	
 	//Handle bad input.
 	if((mode== STEPPER_MOTOR_MODE_FULL_STEP || mode== STEPPER_MOTOR_MODE_WAVE_STEP) && (value< 0 || value> 32)){
 		value= 1;
-		}else if(mode== STEPPER_MOTOR_MODE_HALF_STEP && (value< 0 || value> 64)){
+	}else if(mode== STEPPER_MOTOR_MODE_HALF_STEP && (value< 0 || value> 64)){
 		value= 1;
 	}
 	
-	//Full step mode.
+	//Full step mode. Divide value by two get motor steps.
 	if(mode== STEPPER_MOTOR_MODE_FULL_STEP){
-		for(uint16_t i= 0; i< (value* STEPPER_MOTOR_GEAR_RATIO)/4; i++){
+		for(uint16_t i= 0; i< (value* STEPPER_MOTOR_GEAR_RATIO)/STEPPER_MOTOR_FULL_STEP_COUNT_INTERNAL; i++){
 			if(direction== STEPPER_MOTOR_DIRECTION_FORWARD){
 				stepper_motor_full_step_forward(speed);
-				}else if(direction== STEPPER_MOTOR_DIRECTION_REVERSE){
+			}else if(direction== STEPPER_MOTOR_DIRECTION_REVERSE){
 				stepper_motor_full_step_reverse(speed);
 			}
 		}
 		
 		//Half step mode.
 		}else if(mode== STEPPER_MOTOR_MODE_HALF_STEP){
-		for(uint16_t i= 0; i< (value* STEPPER_MOTOR_GEAR_RATIO)/8; i++){
+		for(uint16_t i= 0; i< (value* STEPPER_MOTOR_GEAR_RATIO)/STEPPER_MOTOR_HALF_STEP_COUNT_INTERNAL; i++){
 			if(direction== STEPPER_MOTOR_DIRECTION_FORWARD){
 				stepper_motor_half_step_forward(speed);
 				}else if(direction== STEPPER_MOTOR_DIRECTION_REVERSE){
@@ -56,9 +56,9 @@ void stepper_motor_step(uint8_t direction, uint16_t value, uint8_t unit, uint8_t
 		}
 	}
 	
-	//Wave step mode.
+	//Wave step mode. Divide value by two get motor steps.
 	else if(mode== STEPPER_MOTOR_MODE_WAVE_STEP){
-		for(uint16_t i= 0; i< (value* STEPPER_MOTOR_GEAR_RATIO)/4; i++){
+		for(uint16_t i= 0; i< (value* STEPPER_MOTOR_GEAR_RATIO)/STEPPER_MOTOR_WAVE_STEP_COUNT_INTERNAL; i++){
 			if(direction== STEPPER_MOTOR_DIRECTION_FORWARD){
 				stepper_motor_wave_drive_forward(speed);
 				}else if(direction== STEPPER_MOTOR_DIRECTION_REVERSE){
@@ -67,6 +67,8 @@ void stepper_motor_step(uint8_t direction, uint16_t value, uint8_t unit, uint8_t
 		}
 	}
 }
+
+
 
 /*
 Full step drive forward (2 coils are active at a time).
