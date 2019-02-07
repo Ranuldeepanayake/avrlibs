@@ -34,7 +34,12 @@ Release/
 /Rotary Encoder/Rotary Encoder/uart.h
 /Rotary Encoder/Rotary Encoder/uart.c
 
+#BMP280
+/BMP280/BMP280/uart.h
+/BMP280/BMP280/uart.c
+/BMP280/BMP280/i2c.h
+/BMP280/BMP280/i2c.c
+
 #Stepper Motor
 #UART
-#BMP280
 #DS3231
