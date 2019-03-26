@@ -19,7 +19,7 @@
 #include "uart.h"
 
 //Defines.
-#define RAM_DUMP_TEST_MODE	//Uncomment to enable test mode. Will fill RAM with a pattern.
+//#define RAM_DUMP_TEST_MODE	//Uncomment to enable test mode. Will fill RAM with a pattern.
 #define RAM_DUMP_READ_START_LOCATION 0x0000	//Change according to the microcontroller.
 #define RAM_DUMP_READ_STOP_LOCATION 0x08FF	//Change according to the microcontroller.
 #define RAM_DUMP_DATA_SET_SIZE 128
