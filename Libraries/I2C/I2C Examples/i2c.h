@@ -29,8 +29,11 @@
 enum i2_slave_write_read_mode{I2C_WRITE, I2C_READ};
 enum i2c_master_transmitter_status_codes{SUCCESS, START_FAILED, REPEAT_START_FAILED, SLAVE_ADDRESS_UNACKNOWLEDGED, SLAVE_DATA_UNACKNOWLEDGED, MASTER_DATA_UNACKNOWLEDGED};
 
-void i2cSet(uint8_t prescaler, uint8_t baud_rate);
+//Functions to initialize the the I2C registers.
+void i2cSet(uint8_t prescaler, uint8_t baud_rate); //For master mode initialization.
+void i2cSet(uint8_t prescaler, uint8_t baud_rate, uint8_t slave_address); //For slave mode initialization.
 
+//Functions which are very low level. 
 void start();
 uint8_t getStatus();
 void write(uint8_t data);
@@ -38,6 +41,7 @@ uint8_t readAck();
 uint8_t readNack();
 void stop();
 
+//Functions for single byte operations.
 uint8_t i2cDelayedStart(uint8_t slave_address, uint8_t read_write);
 uint8_t i2cWrite(uint8_t data);
 uint8_t i2cReadByte();
