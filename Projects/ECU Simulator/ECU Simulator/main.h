@@ -5,9 +5,10 @@
  *  Author: ranul
  */ 
 
-
 #ifndef MAIN_H_
 #define MAIN_H_
+
+#include "i2c.h"
 
 #define REGISTER_MEMORY_SIZE 30
 #define COMMAND_MAP_READ_RANGE_LOW 0 
@@ -80,6 +81,7 @@ enum REGISTER_MAP {
 };
 
 uint8_t readRegister(uint8_t address);
+void commandDecoder(uint8_t command);
 void sendData(uint8_t data);
 
 #endif /* MAIN_H_ */

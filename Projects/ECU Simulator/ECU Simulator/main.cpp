@@ -9,20 +9,24 @@
 #include <avr/pgmspace.h>
 #include <string.h>
 #include <stdlib.h>
+
 #include "main.h"
 
-using namespace std;
+
+//using namespace std;
 
 //Virtual register memory. Eight bit virtual registers have been used.
 uint8_t register_memory [REGISTER_MEMORY_SIZE] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; 
 
-COMMAND_MAP cmap;
-
 int main(void)
 {
-    /* Replace with your application code */
+    i2cSetSlave(1, I2C_BAUD_RATE, I2C_SLAVE_ADDRESS);
+	
     while (1) 
     {
+		if (i2cSlaveReceivedNewData()){
+			commandDecoder(i2cSlaveReadAck());
+		}
 		
     }
 }
@@ -43,8 +47,8 @@ void commandDecoder(uint8_t command){
 				sendData(readRegister(REGISTER_READ_FAULT_CODE));
 			case COMMAND_READ_INPUT_VOLTAGE:
 				sendData(readRegister(REGISTER_READ_INPUT_VOLTAGE_LOW)); sendData(readRegister(REGISTER_READ_INPUT_VOLTAGE_HIGH));
-			case default:
-				break;
+			//case default:
+				//break;
 		}
 	//For write commands.
 	}else if (command > COMMAND_MAP_WRITE_RANGE_LOW && command < COMMAND_MAP_WRITE_RANGE_HIGH){

@@ -11,8 +11,9 @@ uint8_t status_code= 0;
 
 int main(void)
 {
-	setUsart(9600);
-	i2cSet(1, I2C_BAUD_RATE);
+	//setUsart(9600);
+	//i2cSet(1, I2C_BAUD_RATE);
+	i2cSetSlave(1, I2C_BAUD_RATE, I2C_SLAVE_ADDRESS);
 		
     while (1) 
     {	

@@ -8,17 +8,46 @@
 
 #include "i2c.h"
 
+uint8_t slave_received_data_buffer = 0;
+bool slave_received_new_data = false;
+
+ISR (TWI_vect){
+	//When addressed with a write (no data), there will be no action to take.
+	if(TWSR & I2C_SLAVE_ADRRESS_POLLED){ TWCR |= (1 << TWINT);}
+	if(TWSR & I2C_SLAVE_DATA_RECEIVED){ slave_received_data_buffer = TWDR; slave_received_new_data = true; TWCR |= (1 << TWINT);}
+}
+
 /*================================================================================================================================================*/
-/*===============================================FUNCTIONS TO HELP YOU UNDERSTAND I2C BUS OPERATION===============================================*/
+/*========================================================Initialization functions================================================================*/
 /*================================================================================================================================================*/
 
-
-void i2cSet(uint8_t prescaler, uint8_t baud_rate){
+void i2cSetMaster(uint8_t prescaler, uint8_t baud_rate){
 	TWSR= prescaler;	//Two wire status register.	////////////////////////////////////////Currently set to 100KHz.
 	TWBR= baud_rate; //((F_CPU/SCL_CLOCK)-16)/2;	//Set I2C bit rate for SCL generation in master modes.
 	TWCR= (1<< TWEN); //Enable the I2C interface.
 	
 }
+
+void i2cSetSlave(uint8_t prescaler, uint8_t baud_rate, uint8_t slave_address){
+	TWCR = (1 << TWEN) | (1 << TWEA) | (1 << TWIE);
+	TWAR = (slave_address << TWGCI);
+	//******Set SREG interrupt enable.
+}
+
+//1. Send data with slave Rx mode.
+//2. Receive data with slave Tx mode.
+uint8_t i2cSlaveReadAck(){
+	slave_received_new_data = false;
+	return slave_received_data_buffer;
+}
+
+bool i2cSlaveReceivedNewData(){
+	return slave_received_new_data;
+}
+
+/*================================================================================================================================================*/
+/*===============================================FUNCTIONS TO HELP YOU UNDERSTAND I2C BUS OPERATION===============================================*/
+/*================================================================================================================================================*/
 
 void start(){
 	//Send start signal on the I2C bus.
@@ -108,7 +137,7 @@ uint8_t i2cReadByte(){
 	TWCR= ((1<< TWINT) | (1<< TWEN) | (1<< TWEA));	//Enable ACK. Sends ACK to sender after receiving data.
 	while(!(TWCR & (1<< TWINT)));
 	
-	if(getStatus()!= 0x50){	//Check if slave has acknowledged the sent data.
+	if(getStatus()!= 0x50){	//Check if the master has acknowledged the sent data.
 		stop();	//End transaction and release bus if ack not received.
 		return MASTER_DATA_UNACKNOWLEDGED;
 	}
