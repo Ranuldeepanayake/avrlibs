@@ -8,13 +8,29 @@
 
 #include "i2c.h"
 
-uint8_t slave_received_data_buffer = 0;
-bool slave_received_new_data = false;
+uint8_t slave_write_data_received_buffer = 0;
+bool slave_received_new_write_data = false;
+
+uint8_t slave_data_to_be_sent_buffer = 0;
+bool slave_sent_new_read_data = false;
 
 ISR (TWI_vect){
-	//When addressed with a write (no data), there will be no action to take.
-	if(TWSR & I2C_SLAVE_ADRRESS_POLLED){ TWCR |= (1 << TWINT);}
-	if(TWSR & I2C_SLAVE_DATA_RECEIVED){ slave_received_data_buffer = TWDR; slave_received_new_data = true; TWCR |= (1 << TWINT);}
+	//When addressed with an address poll with a write bit, there will be no action to take.
+	if(TWSR & I2C_SLAVE_ADRRESS_WRITE_POLLED){ TWCR |= (1 << TWINT);}
+		
+	//When data is sent by the master with a write bit. This is usually a command.
+	if(TWSR & I2C_SLAVE_DATA_WRITE_RECEIVED){ slave_write_data_received_buffer = TWDR; slave_received_new_write_data = true; TWCR |= (1 << TWINT);}
+		
+	//When addressed with an address poll with a read bit, the first data byte will be sent to the master and the master will send an ack. This is usually the first request for data from the slave..
+	if(TWSR & I2C_SLAVE_ADRRESS_READ_POLLED){ TWDR = slave_data_to_be_sent_buffer; slave_sent_new_read_data = true; TWCR |= (1 << TWINT);}
+		
+	//When the master acknowledges a previously received byte and an ack is sent to the slave. The next data byte will be sent to the master and the master will send an ack. 
+	//This is usually a continuation of a request for data from the slave..
+	if(TWSR & I2C_SLAVE_DATA_READ_RECEIVED){ TWDR = slave_data_to_be_sent_buffer; slave_sent_new_read_data = true; TWCR |= (1 << TWINT);}
+	
+	//When the master does not acknowledge a previously received byte and an nack is sent to the slave. This is usually the end of request for data from the slave.
+	//The buffer is zeroed for reliability.
+	if(TWSR & I2C_SLAVE_DATA_READ_END){ slave_data_to_be_sent_buffer = 0; slave_sent_new_read_data = false; TWCR |= (1 << TWINT);}
 }
 
 /*================================================================================================================================================*/
@@ -31,18 +47,28 @@ void i2cSetMaster(uint8_t prescaler, uint8_t baud_rate){
 void i2cSetSlave(uint8_t prescaler, uint8_t baud_rate, uint8_t slave_address){
 	TWCR = (1 << TWEN) | (1 << TWEA) | (1 << TWIE);
 	TWAR = (slave_address << TWGCI);
-	//******Set SREG interrupt enable.
+	sei();
 }
 
-//1. Send data with slave Rx mode.
-//2. Receive data with slave Tx mode.
 uint8_t i2cSlaveReadAck(){
-	slave_received_new_data = false;
-	return slave_received_data_buffer;
+	slave_received_new_write_data = false;
+	return slave_write_data_received_buffer;
 }
 
-bool i2cSlaveReceivedNewData(){
-	return slave_received_new_data;
+bool i2cSlaveReceivedNewWriteData(){
+	return slave_received_new_write_data;
+}
+
+void i2cSlaveSendData(uint8_t data){
+	slave_data_to_be_sent_buffer = data;
+}
+
+bool i2cSlaveSentNewReadData(){
+	return slave_received_new_write_data;
+}
+
+void i2cSlaveSetMoreDataToSend(){
+	slave_sent_new_read_data = false;
 }
 
 /*================================================================================================================================================*/
@@ -108,6 +134,8 @@ uint8_t i2cDelayedStart(uint8_t slave_address, uint8_t read_write){
 	
 	write((slave_address<< 1) | read_write);	//Send slave address+ write option.
 	
+	while(!(TWCR & (1<< TWINT))); //***New
+	
 	if(read_write== I2C_WRITE && getStatus()!= 0x18){
 		stop();	//End transaction and release bus if ack not received.
 		return SLAVE_ADDRESS_UNACKNOWLEDGED;
@@ -135,9 +163,10 @@ uint8_t i2cWrite(uint8_t data){
 
 uint8_t i2cReadByte(){
 	TWCR= ((1<< TWINT) | (1<< TWEN) | (1<< TWEA));	//Enable ACK. Sends ACK to sender after receiving data.
+	//TWCR= ((1<< TWEN) | (1<< TWEA));	//Enable ACK. Sends ACK to sender after receiving data. //***New
 	while(!(TWCR & (1<< TWINT)));
 	
-	if(getStatus()!= 0x50){	//Check if the master has acknowledged the sent data.
+	if(getStatus()!= 0x50){	//Check if the master has acknowledged the received data.
 		stop();	//End transaction and release bus if ack not received.
 		return MASTER_DATA_UNACKNOWLEDGED;
 	}
@@ -146,7 +175,12 @@ uint8_t i2cReadByte(){
 
 uint8_t i2cReadLastByte(){
 	TWCR= ((1<< TWINT) | (1<< TWEN));	//Disable ACK. Creates a NACK condition which signals the slave to stop sending data.
+	//TWCR= ((1 << TWEN) | (0 << TWEA));	//Disable ACK. Creates a NACK condition which signals the slave to stop sending data. //***New
 	while(!(TWCR & (1<< TWINT)));
+	
+	if(getStatus()!= 0x58){	//Check if the master has not acknowledged the received data. This is normal for the last byte. //***New
+		return COMMUNICATION_ERROR;
+	}
 	return TWDR;	//If ack is sent, return data.
 }
 

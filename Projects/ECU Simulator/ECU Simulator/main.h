@@ -8,13 +8,14 @@
 #ifndef MAIN_H_
 #define MAIN_H_
 
-#include "i2c.h"
-
 #define REGISTER_MEMORY_SIZE 30
 #define COMMAND_MAP_READ_RANGE_LOW 0 
 #define COMMAND_MAP_READ_RANGE_HIGH 127
 #define COMMAND_MAP_WRITE_RANGE_LOW 128
 #define COMMAND_MAP_WRITE_RANGE_HIGH 255
+
+#define ONE_BYTE 1
+#define TWO_BYTES 2
 
 enum COMMAND_MAP {
 	COMMAND_READ_INPUT_VOLTAGE,
@@ -80,8 +81,11 @@ enum REGISTER_MAP {
 	REGISTER_READ_MOTOR_TEMPERATURE
 };
 
-uint8_t readRegister(uint8_t address);
+//uint8_t *readRegister(uint8_t address);
 void commandDecoder(uint8_t command);
-void sendData(uint8_t data);
+//void sendData(uint8_t *data, uint8_t length);
+
+uint8_t readRegister(uint8_t address);
+void sendData(uint8_t data, uint8_t length);
 
 #endif /* MAIN_H_ */

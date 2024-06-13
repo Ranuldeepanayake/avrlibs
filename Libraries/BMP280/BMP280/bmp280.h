@@ -152,7 +152,7 @@ int main(void)
 {
 	bmp280_coefficient_container *coefficients= malloc(sizeof(bmp280_coefficient_container)* 1);
 
-	i2c_set(I2C_BAUD_RATE(I2C_SCL_CLOCK));
+	i2cSet(I2C_PRESCALER, I2C_BAUD_RATE);
 	bmp280_set(BMP280_MODE_NORMAL, BMP280_OVERSAMPLE_PRESSURE_X16, BMP280_OVERSAMPLE_TEMPERATURE_X2, BMP280_FILTER_2, BMP280_STANDBY_250_MS);
 	bmp280_get_coefficient_data(coefficients);
 	

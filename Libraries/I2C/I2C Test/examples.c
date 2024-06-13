@@ -13,7 +13,7 @@ int main(void)
 {
 	//setUsart(9600);
 	//i2cSet(1, I2C_BAUD_RATE);
-	i2cSetSlave(1, I2C_BAUD_RATE, I2C_SLAVE_ADDRESS);
+	i2cSetSlave(I2C_PRESCALER, I2C_BAUD_RATE, I2C_SLAVE_ADDRESS);
 		
     while (1) 
     {	

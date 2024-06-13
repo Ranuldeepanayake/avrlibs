@@ -39,11 +39,14 @@
 #define I2C_BAUD_RATE ((F_CPU/SCL_CLOCK)-16)/(2* I2C_PRESCALER)
 
 //Slave status codes.
-#define I2C_SLAVE_ADRRESS_POLLED 0x60
-#define I2C_SLAVE_DATA_RECEIVED 0x80
+#define I2C_SLAVE_ADRRESS_WRITE_POLLED 0x60
+#define I2C_SLAVE_DATA_WRITE_RECEIVED 0x80
+#define I2C_SLAVE_ADRRESS_READ_POLLED 0xA8
+#define I2C_SLAVE_DATA_READ_RECEIVED 0xB8
+#define I2C_SLAVE_DATA_READ_END 0x0C
 
 enum i2_slave_write_read_mode{I2C_WRITE, I2C_READ};
-enum i2c_master_transmitter_status_codes{SUCCESS, START_FAILED, REPEAT_START_FAILED, SLAVE_ADDRESS_UNACKNOWLEDGED, SLAVE_DATA_UNACKNOWLEDGED, MASTER_DATA_UNACKNOWLEDGED};
+enum i2c_master_transmitter_status_codes{SUCCESS, START_FAILED, REPEAT_START_FAILED, SLAVE_ADDRESS_UNACKNOWLEDGED, SLAVE_DATA_UNACKNOWLEDGED, MASTER_DATA_UNACKNOWLEDGED, COMMUNICATION_ERROR};
 
 /*
 Functions to initialize the the I2C bus.
@@ -82,6 +85,9 @@ uint8_t masterWriteData(uint8_t slave_address, uint8_t number_of_bytes, uint8_t 
 Functions for receiving data in the slave mode.
 */
 uint8_t i2cSlaveReadAck();
-bool i2cSlaveReceivedNewData();
+bool i2cSlaveReceivedNewWriteData();
+void i2cSlaveSendData(uint8_t data);
+bool i2cSlaveSentNewReadData();
+void i2cSlaveSetMoreDataToSend();
 
 #endif /* I2C_H_ */
