@@ -69,7 +69,7 @@ extern struct circular_buffer {
 //Set up the UART peripheral.
 void uartSet(uint16_t baud_rate, uint8_t data_bits, uint8_t parity, uint8_t stop_bits);
 //Transmit a single character on the Tx line.
-void uartSendChar(char data);
+void uartSendChar(uint8_t data);
 //Send a string without carriage return and newline.
 void uartPrint(char *string_pointer);	
 //Send a string with carriage return and newline.

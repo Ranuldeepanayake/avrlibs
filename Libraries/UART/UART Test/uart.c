@@ -78,7 +78,7 @@ void uartSetLed(int toggle){
 /*
 Transmits a single character on the Tx line.
 */
-void uartSendChar(char data){
+void uartSendChar(uint8_t data){
 	usart_led_toggle== USART_LED_ON ? (PORTD|= 0x08) : (PORTD&= ~0x08);		//Turn on the Tx LED.
 	
 	while(!(UCSR0A & UART_DATA_REGISTER_EMPTY)); //Check the status of UDRE0. Transmit only when ready.
@@ -93,7 +93,7 @@ Transmits a string of characters on the TX line. Carriage return and newline are
 */
 void uartPrint(char *string_pointer){
 	while(*string_pointer!= UART_NULL_CHARACTER){ //Check for the null character in the string.
-		uartSendChar(*(string_pointer++)); //Sends the value in the memory location.
+		uartSendChar((uint8_t) *(string_pointer++)); //Sends the value in the memory location.
 	}
 }
 
@@ -102,7 +102,7 @@ Transmits a string of characters on the TX line. Carriage return and newline are
 */
 void uartPrintLn(char *string_pointer){
 	while(*string_pointer!= UART_NULL_CHARACTER){ //Check for the null character in the string.
-		uartSendChar(*(string_pointer++)); //Sends the value in the memory location.
+		uartSendChar((uint8_t) *(string_pointer++)); //Sends the value in the memory location.
 	}
 	uartSendChar(UART_CARRIAGE_RETURN);	//Print carriage return.
 	uartSendChar(UART_NEW_LINE); //Print newline.
