@@ -1,9 +1,13 @@
 /*
- * i2c.h
+ * i2c.c
  *
- * Created: 01-Nov-18 4:52:34 PM
+ * Created: 02-Nov-18 7:30:24 PM
  * Author: Ranul Deepanayake
- * A set of basic functions to help understand I2C communication and ready to use I2C functions.
+ * I2C library for the ATmega 328P.
+ * Uses blocking code for master send and receive modes.
+ * Uses interrupt based code for slave send and receive modes.
+ * Master modes do not use a buffer.
+ * The slave modes uses a single byte buffer.
  */ 
 
 
@@ -20,9 +24,10 @@
 #define F_CPU 16000000UL	
 #endif
 
-//I2C clock set to 100KHz (standard mode).
+//I2C clock default set to 100KHz (standard mode).
 #ifndef SCL_CLOCK
-#define SCL_CLOCK 100000UL	
+#define SCL_CLOCK 100000UL
+//#define SCL_CLOCK 400000UL //400KHz
 #endif
 
 //Pre-scaler for the I2C clock.
@@ -37,6 +42,8 @@
 
 #define TWGCI 0x01
 #define I2C_BAUD_RATE ((F_CPU/SCL_CLOCK)-16)/(2* I2C_PRESCALER)
+
+//Master status codes.
 
 //Slave status codes.
 #define I2C_SLAVE_ADRRESS_WRITE_POLLED 0x60
@@ -57,17 +64,7 @@ void i2cSetMaster(uint8_t prescaler, uint8_t baud_rate);
 void i2cSetSlave(uint8_t prescaler, uint8_t baud_rate, uint8_t slave_address); 
 
 /*
-Functions which are very low level.
-*/ 
-void start();
-uint8_t getStatus();
-void write(uint8_t data);
-uint8_t readAck();
-uint8_t readNack();
-void stop();
-
-/*
-Functions for single byte operations in the master mode.
+Master send and receive functions. 
 */
 uint8_t i2cDelayedStart(uint8_t slave_address, uint8_t read_write);
 uint8_t i2cWrite(uint8_t data);
@@ -76,18 +73,46 @@ uint8_t i2cReadLastByte();
 void i2cStop();
 
 /*
-Functions for multi byte operations in the master mode.
-*/
-uint8_t masterRecieveData(uint8_t slave_address, uint8_t register_address, uint8_t number_of_bytes, uint8_t *data);
-uint8_t masterWriteData(uint8_t slave_address, uint8_t number_of_bytes, uint8_t *register_address, uint8_t *data);
-
-/*
-Functions for receiving data in the slave mode.
+Slave send and receive functions. 
 */
 uint8_t i2cSlaveReadAck();
 bool i2cSlaveReceivedNewWriteData();
 void i2cSlaveSendData(uint8_t data);
 bool i2cSlaveSentNewReadData();
 void i2cSlaveSetMoreDataToSend();
+
+/*
+Internal functions.
+*/
+void i2cStart();
+uint8_t i2cGetStatus();
+void i2cWriteByte(uint8_t data);
+
+/*
+Functions for multi byte operations in the master mode.
+*/
+uint8_t i2cMasterRecieveData(uint8_t slave_address, uint8_t register_address, uint8_t number_of_bytes, uint8_t *data);
+uint8_t i2cMasterWriteData(uint8_t slave_address, uint8_t number_of_bytes, uint8_t *register_address, uint8_t *data);
+
+/*
+Example implementation.
+
+int main(void)
+{
+	i2cSetMaster(I2C_PRESCALER, I2C_BAUD_RATE);
+	
+	while (1)
+	{
+		i2cDelayedStart(BMP280_ADDRESS, I2C_WRITE);
+		i2cWrite(BMP280_MEASUREMENT_CONTROL_REGISTER);
+		i2cDelayedStart(BMP280_ADDRESS, I2C_READ);
+		temp_msb= i2cReadByte();
+		temp_lsb= i2cReadByte();
+		temp_xlsb= i2cReadLastByte();
+		i2cStop();
+	}
+}
+
+*/
 
 #endif /* I2C_H_ */

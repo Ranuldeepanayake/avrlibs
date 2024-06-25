@@ -8,19 +8,13 @@
  * Uses interrupt based code for slave send and receive modes.
  * Master modes do not use a buffer.
  * The slave modes uses a single byte buffer.
+ 
+ https://waterproofman.wordpress.com/2007/02/07/avr-interrupts-in-c/
  */ 
 
 #include "i2c.h"
 
-//Slave data receive buffer.
-uint8_t slave_write_data_received_buffer = 0;
-//Slave data received flag.
-bool slave_received_new_write_data = false;
-
-//Slave data send buffer.
-uint8_t slave_data_to_be_sent_buffer = 0;
-//Slave data sent flag.
-bool slave_sent_new_read_data = false;
+I2C I2C_OBJECT;
 
 /*
 I2C receive ISR. This ISR is entered when the I2C bus receives a byte from a master or slave. This ISR is currently used only for the two slave modes.
@@ -29,20 +23,20 @@ I2C receive ISR. This ISR is entered when the I2C bus receives a byte from a mas
 ISR (TWI_vect){
 	//When addressed with an address poll with a write bit, there will be no action to take.
 	if(TWSR & I2C_SLAVE_ADRRESS_WRITE_POLLED){ TWCR |= (1 << TWINT);}
-		
+	
 	//When data is sent by the master with a write bit. This is usually a command.
-	if(TWSR & I2C_SLAVE_DATA_WRITE_RECEIVED){ slave_write_data_received_buffer = TWDR; slave_received_new_write_data = true; TWCR |= (1 << TWINT);}
-		
+	if(TWSR & I2C_SLAVE_DATA_WRITE_RECEIVED){ I2C_OBJECT.slave_write_data_received_buffer = TWDR; I2C_OBJECT.slave_received_new_write_data = true; TWCR |= (1 << TWINT);}
+	
 	//When addressed with an address poll with a read bit, the first data byte will be sent to the master and the master will send an ack. This is usually the first request for data from the slave..
-	if(TWSR & I2C_SLAVE_ADRRESS_READ_POLLED){ TWDR = slave_data_to_be_sent_buffer; slave_sent_new_read_data = true; TWCR |= (1 << TWINT);}
-		
-	//When the master acknowledges a previously received byte and an ack is sent to the slave. The next data byte will be sent to the master and the master will send an ack. 
+	if(TWSR & I2C_SLAVE_ADRRESS_READ_POLLED){ TWDR = I2C_OBJECT.slave_data_to_be_sent_buffer; I2C_OBJECT.slave_sent_new_read_data = true; TWCR |= (1 << TWINT);}
+	
+	//When the master acknowledges a previously received byte and an ack is sent to the slave. The next data byte will be sent to the master and the master will send an ack.
 	//This is usually a continuation of a request for data from the slave..
-	if(TWSR & I2C_SLAVE_DATA_READ_RECEIVED){ TWDR = slave_data_to_be_sent_buffer; slave_sent_new_read_data = true; TWCR |= (1 << TWINT);}
+	if(TWSR & I2C_SLAVE_DATA_READ_RECEIVED){ TWDR = I2C_OBJECT.slave_data_to_be_sent_buffer; I2C_OBJECT.slave_sent_new_read_data = true; TWCR |= (1 << TWINT);}
 	
 	//When the master does not acknowledge a previously received byte and an nack is sent to the slave. This is usually the end of request for data from the slave.
 	//The buffer is zeroed for reliability.
-	if(TWSR & I2C_SLAVE_DATA_READ_END){ slave_data_to_be_sent_buffer = 0; slave_sent_new_read_data = false; TWCR |= (1 << TWINT);}
+	if(TWSR & I2C_SLAVE_DATA_READ_END){ I2C_OBJECT.slave_data_to_be_sent_buffer = 0; I2C_OBJECT.slave_sent_new_read_data = false; TWCR |= (1 << TWINT);}
 }
 
 /*
@@ -52,7 +46,7 @@ Initialization functions for all modes.
 /*
 Sets the I2C peripheral to operate in the master send and receive modes.
 */
-void i2cSetMaster(uint8_t prescaler, uint8_t baud_rate){
+void I2C :: i2cSetMaster(uint8_t prescaler, uint8_t baud_rate){
 	TWSR= prescaler;	//Two wire status register.	////////////////////////////////////////Currently set to 100KHz.
 	TWBR= baud_rate; //((F_CPU/SCL_CLOCK)-16)/2;	//Set I2C bit rate for SCL generation in master modes.
 	TWCR= (1<< TWEN); //Enable the I2C interface.
@@ -62,7 +56,7 @@ void i2cSetMaster(uint8_t prescaler, uint8_t baud_rate){
 /*
 Sets the I2C peripheral to operate in the slave send and receive modes. Enables global interrupts since the I2C Rx ISR is used.
 */
-void i2cSetSlave(uint8_t prescaler, uint8_t baud_rate, uint8_t slave_address){
+void I2C :: i2cSetSlave(uint8_t prescaler, uint8_t baud_rate, uint8_t slave_address){
 	TWCR = (1 << TWEN) | (1 << TWEA) | (1 << TWIE);
 	TWAR = (slave_address << TWGCI);
 	sei();
@@ -77,7 +71,7 @@ Initiates an I2C delayed start. This generates a start signal, addresses a speci
 A while loop is utilized, hence there is a risk of the bus hanging up during an erroneous condition.
 Returns a result code.
 */
-uint8_t i2cDelayedStart(uint8_t slave_address, uint8_t read_write){
+uint8_t I2C :: i2cDelayedStart(uint8_t slave_address, uint8_t read_write){
 	//Start signal on the I2C bus.
 	i2cStart();	
 	
@@ -110,7 +104,7 @@ Sends one byte of data on the I2C bus. A data byte can be an address, write comm
 A while loop is utilized, hence there is a risk of the bus hanging up during an erroneous condition.
 Returns a result code. 
 */
-uint8_t i2cWrite(uint8_t data){
+uint8_t I2C :: i2cWrite(uint8_t data){
 	i2cWriteByte(data);
 	
 	if(i2cGetStatus()!= 0x28){	//Check if slave has acknowledged the sent data.
@@ -125,7 +119,7 @@ Read one byte to be received from the I2C slave and send an acknowledgment.
 A while loop is utilized, hence there is a risk of the bus hanging up during an erroneous condition.
 Returns a result code.
 */
-uint8_t i2cReadByte(){
+uint8_t I2C :: i2cReadByte(){
 	TWCR= ((1<< TWINT) | (1<< TWEN) | (1<< TWEA));	//Enable ACK. Sends ACK to sender after receiving data.
 	//TWCR= ((1<< TWEN) | (1<< TWEA));	//Enable ACK. Sends ACK to sender after receiving data. //***New
 	while(!(TWCR & (1<< TWINT)));
@@ -142,7 +136,7 @@ Read the last byte to be received from the I2C slave and not send an acknowledgm
 A while loop is utilized, hence there is a risk of the bus hanging up during an erroneous condition.
 Returns a result code.
 */
-uint8_t i2cReadLastByte(){
+uint8_t I2C :: i2cReadLastByte(){
 	TWCR= ((1<< TWINT) | (1<< TWEN));	//Disable ACK. Creates a NACK condition which signals the slave to stop sending data.
 	//TWCR= ((1 << TWEN) | (0 << TWEA));	//Disable ACK. Creates a NACK condition which signals the slave to stop sending data. //***New
 	while(!(TWCR & (1<< TWINT)));
@@ -156,7 +150,7 @@ uint8_t i2cReadLastByte(){
 /*
 Generates a stop condition on the I2C bus.
 */
-void i2cStop(){
+void I2C :: i2cStop(){
 	//Send stop signal on the I2C bus.
 	//TWCR&= ~(1<< TWSTA);	//Disable the start signal.
 	TWCR= ((1<< TWINT) | (1<< TWSTO) | (1<< TWEN));	//Set the stop bit.
@@ -170,7 +164,7 @@ Below are functions used in the slave send and slave receive modes.
 /*
 Returns write a command data byte in the receive buffer received from the master.
 */
-uint8_t i2cSlaveReadAck(){
+uint8_t I2C :: i2cSlaveReadAck(){
 	slave_received_new_write_data = false;
 	return slave_write_data_received_buffer;
 }
@@ -179,14 +173,14 @@ uint8_t i2cSlaveReadAck(){
 Check whether the slave received a write command from the master.
 Returns true if there is an outstanding command and false if there isn't. 
 */
-bool i2cSlaveReceivedNewWriteData(){
+bool I2C :: i2cSlaveReceivedNewWriteData(){
 	return slave_received_new_write_data;
 }
 
 /*
 Places a data byte in the transmit buffer to be sent to the master.
 */
-void i2cSlaveSendData(uint8_t data){
+void I2C :: i2cSlaveSendData(uint8_t data){
 	slave_data_to_be_sent_buffer = data;
 }
 
@@ -194,7 +188,7 @@ void i2cSlaveSendData(uint8_t data){
 Check whether the slave received a read command from the master.
 Returns true if there is an outstanding command and false if there isn't.
 */
-bool i2cSlaveSentNewReadData(){
+bool I2C :: i2cSlaveSentNewReadData(){
 	return slave_received_new_write_data;
 }
 
@@ -202,7 +196,7 @@ bool i2cSlaveSentNewReadData(){
 Resets the slave sent data flag to accommodate additional data bytes to be sent to the master.
 This does not need to be called for the last data byte to be sent. 
 */
-void i2cSlaveSetMoreDataToSend(){
+void I2C :: i2cSlaveSetMoreDataToSend(){
 	slave_sent_new_read_data = false;
 }
 
@@ -213,7 +207,7 @@ Below are internal functions which do not need to be called directly.
 /*
 Generates a start condition on the I2C bus.
 */
-void i2cStart(){
+void I2C :: i2cStart(){
 	//Send start signal on the I2C bus.
 	TWCR= ((1<< TWINT) | (1<< TWSTA) | (1<< TWEN)); //Clear TWINT to execute start signal.
 	while(!(TWCR & (1<< TWINT)));	//Wait for TWINT to become zero (wait for pending operations to finish).
@@ -223,7 +217,7 @@ void i2cStart(){
 Sends one byte of data on the I2C bus. A data byte can be an address, write command, read command or data.
 A while loop is utilized, hence there is a risk of the bus hanging up during an erroneous condition.
 */
-void i2cWriteByte(uint8_t data){
+void I2C :: i2cWriteByte(uint8_t data){
 	//Write data to the I2C bus (device addresses, register addresses and data).
 	TWDR= data;
 	TWCR= ((1<< TWINT) | (1<< TWEN));	//Clear TWINT to shift data out the I2C bus.
@@ -233,7 +227,7 @@ void i2cWriteByte(uint8_t data){
 /*
 Returns the status code of the last operation stored in the I2C status register. 
 */
-uint8_t i2cGetStatus(){
+uint8_t I2C :: i2cGetStatus(){
 	//Return status of an I2C operation. Get the value by masking the pre-scaler bits.
 	return TWSR & 0xF8;
 }
@@ -246,7 +240,7 @@ Below functions can be used for mass data reads and writes such as EEPROM read a
 /*
 Sends a command to an I2C slave requesting to read a string of data.
 */
-uint8_t i2cMasterRecieveData(uint8_t slave_address, uint8_t register_address, uint8_t number_of_bytes, uint8_t *data){
+uint8_t I2C :: i2cMasterRecieveData(uint8_t slave_address, uint8_t register_address, uint8_t number_of_bytes, uint8_t *data){
 	//Send command to slave in write mode.
 	i2cDelayedStart(slave_address, I2C_WRITE);
 	i2cWrite(register_address);
@@ -266,7 +260,7 @@ uint8_t i2cMasterRecieveData(uint8_t slave_address, uint8_t register_address, ui
 /*
 Sends a command to an I2C slave to write a string of data.
 */
-uint8_t i2cMasterWriteData(uint8_t slave_address, uint8_t number_of_bytes, uint8_t *register_address, uint8_t *data){
+uint8_t I2C :: i2cMasterWriteData(uint8_t slave_address, uint8_t number_of_bytes, uint8_t *register_address, uint8_t *data){
 	//Send command to slave in write mode.
 	i2cDelayedStart(slave_address, I2C_WRITE);
 	for(int i= 0; i< number_of_bytes; i++){
@@ -276,5 +270,4 @@ uint8_t i2cMasterWriteData(uint8_t slave_address, uint8_t number_of_bytes, uint8
 	i2cStop();
 	return SUCCESS;
 }
-
 

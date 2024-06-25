@@ -1,13 +1,3 @@
-/*
- * timer.h
- *
- * Created: 29-Jan-19 4:07:20 PM
- * Author: Ranul Deepanayake
- * Timer library for the ATmega328P clocked at 16MHz. Uses Timer 0.
- * Can measure elapsed milliseconds and microseconds (both modes can't run at the same time).
- */ 
-
-
 #ifndef TIMER_H_
 #define TIMER_H_
 
@@ -25,15 +15,17 @@
 #define TIMER_MICROS_OC0A 0x01
 #define TIMER_MILLIS_TO_MICROS_MULTIPLIER 8
 
-//Functions.
+/*
+Functions.
+*/
 //Set timer to count milliseconds.
-void timer_set_millis();
+void timerSetMillis();
 //Set timer to count microseconds.
-void timer_set_micros();		
+void timerSetMicros();		
 //Get milliseconds.
-uint16_t timer_get_millis();
+uint16_t timerGetMillis();
 //Get microseconds.				 
-uint16_t timer_get_micros();
+uint16_t timerGetMicros();
 
 /*
 Example implementation.

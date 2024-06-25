@@ -1,8 +1,11 @@
 /*
- * timer.c
+ * Timer.c
  *
- * Created: 29-Jan-19 4:07:07 PM
- *  Author: Ranul Deepanayake
+ * Created: 29-Oct-18 8:53:17 PM
+ * Author : Ranul Deepanayake
+ * A Timer library for the ATmega328P clocked at 16MHz. Uses Timer 0.
+ * Can measure elapsed milliseconds and microseconds (both modes can't run at the same time).
+ * This does not break Timer0 functions such as '_delay_ms()'.
  */ 
 
 #include "timer.h"
@@ -19,7 +22,7 @@ ISR(TIMER0_COMPA_vect){
 /*
 Set Timer 0 to count milliseconds. CTC mode with OC0A interrupt is used.
 */
-void timer_set_millis(){
+void timerSetMillis(){
 	//CTC mode is used.
 	TCCR0A= TIMER_OC0A_DISCONNECTED;	//OC0A disconnected.
 	TCCR0B= TIMER_MILLIS_PRESCALER;	//Set pre-scaler to 64.
@@ -32,7 +35,7 @@ void timer_set_millis(){
 /*
 Set Timer 0 to count microseconds. CTC mode with OC0A interrupt is used.
 */
-void timer_set_micros(){
+void timerSetMicros(){
 	TCCR0A= TIMER_OC0A_DISCONNECTED;	//OC0A disconnected.
 	TCCR0B= TIMER_MICROS_PRESCALER;	//Set pre-scaler to 8.
 	TIMSK0= TIMER_OC0A_INTERRUPT;	//Set OC0A interrupt.
@@ -44,7 +47,7 @@ void timer_set_micros(){
 /*
 Get elapsed milliseconds. Can store the maximum value of 65535 milliseconds.
 */
-uint16_t timer_get_millis(){
+uint16_t timerGetMillis(){
 	uint16_t temp;
 	cli();		//Temporarily disable global interrupts to prevent inconsistencies in the returned value due to partial writes to 'time_units'.
 	temp= time_units;
@@ -53,9 +56,9 @@ uint16_t timer_get_millis(){
 }
 
 /*
-Get elapsed milliseconds. Can store the maximum value of 65535 microseconds.
+Get elapsed microseconds. Can store the maximum value of 65535 microseconds.
 */
-uint16_t timer_get_micros(){
+uint16_t timerGetMicros(){
 	uint16_t temp;
 	cli();		//Temporarily disable global interrupts to prevent inconsistencies in the returned value due to partial writes of 'time_units'.
 	temp= time_units* TIMER_MILLIS_TO_MICROS_MULTIPLIER;

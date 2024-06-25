@@ -2,6 +2,14 @@
  * bmp280.h
  *
  * Created: 04-Nov-18 9:10:11 AM
+ *  Author: Ranul Deepanayake
+ */ 
+
+
+/*
+ * bmp280.h
+ *
+ * Created: 04-Nov-18 9:10:11 AM
  * Author: Ranul Deepanayake
  * BOSCH BMP280 library for the ATmega328P using I2C.
  * Supports selectable sensor configuration options.
@@ -122,25 +130,25 @@ extern int32_t bmp280_t_fine;
 
 //Functions.
 //Set up the sensor with default settings.
-void bmp280_set_default(void);
+void bmp280SetDefault(void);
 //Set up the sensor with user specified settings.
-void bmp280_set(uint8_t mode, uint8_t oversample_pressure, uint8_t oversample_temperature,  uint8_t iir_filter, uint8_t standby_time);
-//Saves coefficient data in the host microcontroller. Must be called once before the first measurement.
-void bmp280_get_coefficient_data(bmp280_coefficient_container *coefficents);
+void bmp280Set(uint8_t mode, uint8_t oversample_pressure, uint8_t oversample_temperature,  uint8_t iir_filter, uint8_t standby_time);
+//Saves coefficient data in the host micro controller. Must be called once before the first measurement.
+void bmp280GetCalibrationData(bmp280_coefficient_container *coefficents);
 //Get temperature as a float in Celsius.
-float bmp280_get_temperature(bmp280_coefficient_container *coefficents);
+float bmp280GetTemperature(bmp280_coefficient_container *coefficents);
 //Get pressure as a float in Pa.
-float bmp280_get_pressure(bmp280_coefficient_container *coefficents);
+float bmp280GetPressure(bmp280_coefficient_container *coefficents);
 //Get the device ID (0x58).
-uint8_t bmp280_get_device_id(void);
+uint8_t bmp280GetDeviceId(void);
 //Reset the sensor.
-void bmp280_reset(void);
+void bmp280Reset(void);
 //Under development.
-void bmp280_force_measurement(void);
+void bmp280ForceMeasurement(void);
 //Under development.
-uint8_t bmp280_get_measurement_status(void);
+uint8_t bmp280GetMeasurementStatus(void);
 //Under development.
-uint8_t bmp280_get_nvs_load_status(void);
+uint8_t bmp280GetNvsLoadStatus(void);
 
 /*
 Example implementation.

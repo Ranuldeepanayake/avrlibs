@@ -11,90 +11,90 @@ int32_t bmp280_t_fine= 0;
 /*
 Set up the sensor with default settings.
 */
-void bmp280_set_default(void){
-	bmp280_set(BMP280_MODE_NORMAL, BMP280_OVERSAMPLE_PRESSURE_X16, BMP280_OVERSAMPLE_TEMPERATURE_X2, BMP280_FILTER_2, BMP280_STANDBY_250_MS);
+void bmp280SetDefault(void){
+	bmp280Set(BMP280_MODE_NORMAL, BMP280_OVERSAMPLE_PRESSURE_X16, BMP280_OVERSAMPLE_TEMPERATURE_X2, BMP280_FILTER_2, BMP280_STANDBY_250_MS);
 }
 
 /*
 Set up the sensor with user specified settings.
 */
-void bmp280_set(uint8_t mode, uint8_t oversample_pressure, uint8_t oversample_temperature,  uint8_t iir_filter, uint8_t standby_time){
-	i2c_delayed_start(BMP280_ADDRESS, I2C_WRITE);
-	i2c_write(BMP280_MEASUREMENT_CONTROL_REGISTER);
-	i2c_write(mode | oversample_pressure | oversample_temperature);
-	i2c_write(BMP280_CONFIGURATION_REGISTER);
-	i2c_write(iir_filter | standby_time);
-	i2c_stop();
+void bmp280Set(uint8_t mode, uint8_t oversample_pressure, uint8_t oversample_temperature,  uint8_t iir_filter, uint8_t standby_time){
+	i2cDelayedStart(BMP280_ADDRESS, I2C_WRITE);
+	i2cWrite(BMP280_MEASUREMENT_CONTROL_REGISTER);
+	i2cWrite(mode | oversample_pressure | oversample_temperature);
+	i2cWrite(BMP280_CONFIGURATION_REGISTER);
+	i2cWrite(iir_filter | standby_time);
+	i2cStop();
 }
 
 /*
 Saves coefficient data in the host microcontroller.
 Must be called once before the first measurement. 
 */
-void bmp280_get_coefficient_data(bmp280_coefficient_container *coefficents){
+void bmp280GetCalibrationData(bmp280_coefficient_container *coefficents){
 	uint16_t temp_u= 0;
 	int16_t temp_s= 0;
 	
-	i2c_delayed_start(BMP280_ADDRESS, I2C_WRITE);
-	i2c_write(BMP280_CALIB_00_LSB);
-	i2c_delayed_start(BMP280_ADDRESS, I2C_READ);
+	i2cDelayedStart(BMP280_ADDRESS, I2C_WRITE);
+	i2cWrite(BMP280_CALIB_00_LSB);
+	i2cDelayedStart(BMP280_ADDRESS, I2C_READ);
 	
 	//Get temperature coefficient data.
-	temp_u= i2c_read_ack();
-	coefficents->t_1= (i2c_read_ack()<< 8) | temp_u;
+	temp_u= i2cReadByte();
+	coefficents->t_1= (i2cReadByte()<< 8) | temp_u;
 	
-	temp_s= i2c_read_ack();
-	coefficents->t_2= (i2c_read_ack()<< 8) | temp_s;
+	temp_s= i2cReadByte();
+	coefficents->t_2= (i2cReadByte()<< 8) | temp_s;
 	
-	temp_s= i2c_read_ack();
-	coefficents->t_3= (i2c_read_nack()<< 8) | temp_s;
+	temp_s= i2cReadByte();
+	coefficents->t_3= (i2cReadLastByte()<< 8) | temp_s;
 	
 	//Get pressure coefficient data.
-	temp_u= i2c_read_ack();
-	coefficents->p_1= (i2c_read_ack()<< 8) | temp_u;
+	temp_u= i2cReadByte();
+	coefficents->p_1= (i2cReadByte()<< 8) | temp_u;
 	
-	temp_s= i2c_read_ack();
-	coefficents->p_2= (i2c_read_ack()<< 8) | temp_s;
+	temp_s= i2cReadByte();
+	coefficents->p_2= (i2cReadByte()<< 8) | temp_s;
 	
-	temp_s= i2c_read_ack();
-	coefficents->p_3= (i2c_read_ack()<< 8) | temp_s;
+	temp_s= i2cReadByte();
+	coefficents->p_3= (i2cReadByte()<< 8) | temp_s;
 	
-	temp_s= i2c_read_ack();
-	coefficents->p_4= (i2c_read_ack()<< 8) | temp_s;
+	temp_s= i2cReadByte();
+	coefficents->p_4= (i2cReadByte()<< 8) | temp_s;
 	
-	temp_s= i2c_read_ack();
-	coefficents->p_5= (i2c_read_ack()<< 8) | temp_s;
+	temp_s= i2cReadByte();
+	coefficents->p_5= (i2cReadByte()<< 8) | temp_s;
 	
-	temp_s= i2c_read_ack();
-	coefficents->p_6= (i2c_read_ack()<< 8) | temp_s;
+	temp_s= i2cReadByte();
+	coefficents->p_6= (i2cReadByte()<< 8) | temp_s;
 	
-	temp_s= i2c_read_ack();
-	coefficents->p_7= (i2c_read_ack()<< 8) | temp_s;
+	temp_s= i2cReadByte();
+	coefficents->p_7= (i2cReadByte()<< 8) | temp_s;
 	
-	temp_s= i2c_read_ack();
-	coefficents->p_8= (i2c_read_ack()<< 8) | temp_s;
+	temp_s= i2cReadByte();
+	coefficents->p_8= (i2cReadByte()<< 8) | temp_s;
 	
-	temp_s= i2c_read_ack();
-	coefficents->p_9= (i2c_read_nack()<< 8) | temp_s;
+	temp_s= i2cReadByte();
+	coefficents->p_9= (i2cReadLastByte()<< 8) | temp_s;
 	
-	i2c_stop();
+	i2cStop();
 }
 
 /*
 Get temperature as a float in Celsius with a resolution of two decimal places. Ex- 32.58C.
 */
-float bmp280_get_temperature(bmp280_coefficient_container *coefficents){
+float bmp280GetTemperature(bmp280_coefficient_container *coefficents){
 	int32_t temperature= 0, var_1= 0, var_2= 0;
 	uint8_t temp_msb= 0, temp_lsb= 0, temp_xlsb= 0;
 	float t= 0;
 	
-	i2c_delayed_start(BMP280_ADDRESS, I2C_WRITE);
-	i2c_write(BMP280_TEMPERATURE_MSB);
-	i2c_delayed_start(BMP280_ADDRESS, I2C_READ);
-	temp_msb= i2c_read_ack();
-	temp_lsb= i2c_read_ack();
-	temp_xlsb= i2c_read_nack();
-	i2c_stop();
+	i2cDelayedStart(BMP280_ADDRESS, I2C_WRITE);
+	i2cWrite(BMP280_TEMPERATURE_MSB);
+	i2cDelayedStart(BMP280_ADDRESS, I2C_READ);
+	temp_msb= i2cReadByte();
+	temp_lsb= i2cReadByte();
+	temp_xlsb= i2cReadLastByte();
+	i2cStop();
 	
 	//Formula from Adafruit's library.
 	temperature= temp_msb;
@@ -114,20 +114,20 @@ float bmp280_get_temperature(bmp280_coefficient_container *coefficents){
 Get pressure as a float in Pa with a resolution of two decimal places. Ex- 97588.45Pa.
 Implicitly calls the temperature function to  update the 'bmp280_t_fine' global variable.
 */
-float bmp280_get_pressure(bmp280_coefficient_container *coefficents){
+float bmp280GetPressure(bmp280_coefficient_container *coefficents){
 	int32_t pressure= 0; 
 	uint8_t pressure_msb= 0, pressure_lsb= 0, presure_xlsb= 0;
 	int64_t var_1= 0, var_2= 0, p= 0;
 	
-	bmp280_get_temperature(coefficents); //Has to be called to update the 'bmp280_t_fine' global variable. 
+	bmp280GetTemperature(coefficents); //Has to be called to update the 'bmp280_t_fine' global variable. 
 	
-	i2c_delayed_start(BMP280_ADDRESS, I2C_WRITE);
-	i2c_write(BMP280_PRESSURE_MSB);
-	i2c_delayed_start(BMP280_ADDRESS, I2C_READ);
-	pressure_msb= i2c_read_ack();
-	pressure_lsb= i2c_read_ack();
-	presure_xlsb= i2c_read_nack();
-	i2c_stop();
+	i2cDelayedStart(BMP280_ADDRESS, I2C_WRITE);
+	i2cWrite(BMP280_PRESSURE_MSB);
+	i2cDelayedStart(BMP280_ADDRESS, I2C_READ);
+	pressure_msb= i2cReadByte();
+	pressure_lsb= i2cReadByte();
+	presure_xlsb= i2cReadLastByte();
+	i2cStop();
 	
 	//Formula from Adafruit's library.
 	pressure= pressure_msb;
@@ -160,42 +160,42 @@ float bmp280_get_pressure(bmp280_coefficient_container *coefficents){
 /*
 Get the device ID (0x58).
 */
-uint8_t bmp280_get_device_id(void){
+uint8_t bmp280GetDeviceId(void){
 	uint8_t chip_id= 0;
-	i2c_delayed_start(BMP280_ADDRESS, I2C_WRITE);
-	i2c_write(BMP280_CHIP_ID_REGISTER);
-	i2c_delayed_start(BMP280_ADDRESS, I2C_READ);
-	chip_id= i2c_read_nack();
-	i2c_stop();
+	i2cDelayedStart(BMP280_ADDRESS, I2C_WRITE);
+	i2cWrite(BMP280_CHIP_ID_REGISTER);
+	i2cDelayedStart(BMP280_ADDRESS, I2C_READ);
+	chip_id= i2cReadLastByte();
+	i2cStop();
 	return chip_id;
 }
 
 /*
 Reset the sensor.
 */
-void bmp280_reset(void){
-	i2c_delayed_start(BMP280_ADDRESS, I2C_WRITE);
-	i2c_write(BMP280_RESET_REGISTER);
-	i2c_write(BMP280_RESET_VALUE);
-	i2c_stop();
+void bmp280Reset(void){
+	i2cDelayedStart(BMP280_ADDRESS, I2C_WRITE);
+	i2cWrite(BMP280_RESET_REGISTER);
+	i2cWrite(BMP280_RESET_VALUE);
+	i2cStop();
 }
 
 /*
 Under development.
 */
-void bmp280_force_measurement(void){
+void bmp280ForceMeasurement(void){
 }
 
 /*
 Under development.
 */
-uint8_t bmp280_get_measurement_status(void){
+uint8_t bmp280GetMeasurementStatus(void){
 	return 0;
 }
 
 /*
 Under development.
 */
-uint8_t bmp280_get_nvs_load_status(void){
+uint8_t bmp280GetNvsLoadStatus(void){
 	return 0;
 }
