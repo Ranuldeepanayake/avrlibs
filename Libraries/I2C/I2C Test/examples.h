@@ -11,7 +11,6 @@
 #define EXAMPLES_H_
 
 #include "i2c.h"
-#include "usart328P.h"
 #include <stdio.h>
 #include <util/delay.h>
 

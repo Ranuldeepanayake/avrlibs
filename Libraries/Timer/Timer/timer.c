@@ -9,6 +9,7 @@
  */ 
 
 #include "timer.h"
+#include <avr/interrupt.h>
 
 volatile uint16_t time_units= 0;	//Store the number of milliseconds or microseconds.
 

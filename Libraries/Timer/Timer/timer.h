@@ -3,7 +3,6 @@
 
 //Includes.
 #include <avr/io.h>
-#include <avr/interrupt.h>
 
 //Attributes.
 #define TIMER_OC0A_DISCONNECTED 0x02

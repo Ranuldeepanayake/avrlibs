@@ -16,7 +16,6 @@
 
 //Includes.
 #include <avr/io.h>	//Pin definitions.
-#include <avr/interrupt.h> //For the I2C interrupt vector.
 #include <stdbool.h>
 
 //CPU clock.
@@ -26,21 +25,36 @@
 
 //I2C clock default set to 100KHz (standard mode).
 #ifndef SCL_CLOCK
-#define SCL_CLOCK 100000UL
+#define SCL_CLOCK 100000UL //100KHz
 //#define SCL_CLOCK 400000UL //400KHz
 #endif
 
-//Pre-scaler for the I2C clock.
+//Prescaler for the I2C clock.
 #ifndef I2C_PRESCALER
 #define I2C_PRESCALER 1	
 #endif
 
-//Address used in slave mode.
+//Default Address used in slave mode.
 #ifndef I2C_SLAVE_ADDRESS
 #define I2C_SLAVE_ADDRESS 0x05
 #endif
 
+//Bus hangup detection timer clock cycles (number of I2C clock cycles).
+#ifndef BUS_HANGUP_TIMEOUT_CYCLES
+#define BUS_HANGUP_TIMEOUT_CYCLES 60
+#endif
+
+#define BUS_HANGUP_PROTECTION_ENABLED
+
+//Bus hangup detection timer.
+#ifndef BUS_HANGUP_TIMEOUT
+#define BUS_HANGUP_TIMEOUT 640 //Directly in microseconds. Value obtained after noticing that one I2C clock with the BMP280 spanned 40 microseconds (40 x 16 cycles).
+//#define BUS_HANGUP_TIMEOUT (((1 / (SCL_CLOCK/1000)) * 1000) * BUS_HANGUP_TIMEOUT_CYCLES) //This macro did not perform proper math??
+#endif
+
 #define TWGCI 0x01
+
+//Baud rate calculation.
 #define I2C_BAUD_RATE ((F_CPU/SCL_CLOCK)-16)/(2* I2C_PRESCALER)
 
 //Master status codes.
@@ -66,32 +80,47 @@ void i2cSetSlave(uint8_t prescaler, uint8_t baud_rate, uint8_t slave_address);
 /*
 Master send and receive functions. 
 */
+//Start communication with a slave.
 uint8_t i2cDelayedStart(uint8_t slave_address, uint8_t read_write);
+//Send a command or data byte to a slave.
 uint8_t i2cWrite(uint8_t data);
+//Read a data byte from a slave and send an ACK.
 uint8_t i2cReadByte();
+//Read a data byte from a slave and send a NACK.
 uint8_t i2cReadLastByte();
+//Generate a stop condition.
 void i2cStop();
 
 /*
 Slave send and receive functions. 
 */
+//Returns write a command data byte in the receive buffer received from the master.
 uint8_t i2cSlaveReadAck();
+//Check whether the slave received a write command from the master.
 bool i2cSlaveReceivedNewWriteData();
+//Places a data byte in the transmit buffer to be sent to the master.
 void i2cSlaveSendData(uint8_t data);
+//Check whether the slave received a read command from the master.
 bool i2cSlaveSentNewReadData();
+//Resets the slave sent data flag to accommodate additional data bytes to be sent to the master.
 void i2cSlaveSetMoreDataToSend();
 
 /*
 Internal functions.
 */
+//Generate a start condition.
 void i2cStart();
+//Get the status code from the I2C status register.
 uint8_t i2cGetStatus();
+//Send a byte on the bus.
 void i2cWriteByte(uint8_t data);
 
 /*
 Functions for multi byte operations in the master mode.
 */
+//Write a stream of data to a slave.
 uint8_t i2cMasterRecieveData(uint8_t slave_address, uint8_t register_address, uint8_t number_of_bytes, uint8_t *data);
+//Read a stream of data from a slave.
 uint8_t i2cMasterWriteData(uint8_t slave_address, uint8_t number_of_bytes, uint8_t *register_address, uint8_t *data);
 
 /*
