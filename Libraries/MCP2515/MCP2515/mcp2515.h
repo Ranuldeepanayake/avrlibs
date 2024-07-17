@@ -41,6 +41,7 @@ SPI commands.
 #define MCP2515_COMMAND_READ 0x03
 #define MCP2515_COMMAND_READ_SEQUENTIAL_RXB0_SIDH 0x90
 #define MCP2515_COMMAND_READ_SEQUENTIAL_RXB0_D0 0x92
+#define MCP2515_COMMAND_DUMMY_BYTE 0xFF
 
 //Timing configuration selector.
 #define MCP2515_CONF_8MHZ_50SP_125KBPS		0
@@ -82,9 +83,15 @@ Registers.
 #define MCP2515_REGISTER_RXB0CTRL 0x60
 #define MCP2515_REGISTER_RXB0SIDH 0x61
 #define MCP2515_REGISTER_RXB0SIDL 0x62
-#define MCP2515_REGISTER_RXB0EIDH 0x62
-#define MCP2515_REGISTER_RXB0EIDL 0x63
-#define MCP2515_REGISTER_RXB0DLC 0x63
+#define MCP2515_REGISTER_RXB0EIDH 0x63
+#define MCP2515_REGISTER_RXB0EIDL 0x64
+#define MCP2515_REGISTER_RXB0DLC 0x65
+#define MCP2515_REGISTER_RXB1CTRL 0x70
+#define MCP2515_REGISTER_RXB1SIDH 0x71
+#define MCP2515_REGISTER_RXB1SIDL 0x72
+#define MCP2515_REGISTER_RXB1EIDH 0x73
+#define MCP2515_REGISTER_RXB1EIDL 0x74
+#define MCP2515_REGISTER_RXB1DLC 0x75
 
 /*
 Flags.
@@ -97,11 +104,15 @@ Flags.
 #define MCP2515_TRANSMIT_EXTENDED_ADDRESS 0x08
 #define MCP2515_TRANSMIT_RTR_NO 0x00
 #define MCP2515_TRANSMIT_RTR_YES 0x40
+#define MCP2515_TRANSMIT_TXBNCTRL_TRANSMIT 0x08
+#define MCP2515_TRANSMIT_TXB0CTRL_STATUS_PENDING 0x08
 //Read.
 #define MCP2515_RECEIVE_BUFFER_0 0
 #define MCP2515_RECEIVE_BUFFER_1 1
-#define MCP2515_TRANSMIT_TXBNCTRL_TRANSMIT 0x08
-#define MCP2515_TRANSMIT_TXB0CTRL_STATUS_PENDING 0x08
+#define MCP2515_RECEIVE_STANDARD_ADDRESS 0x00
+#define MCP2515_RECEIVE_EXTENDED_ADDRESS 0x08
+#define MCP2515_RECEIVE_RTR_NO 0x00
+#define MCP2515_RECEIVE_RTR_YES 0x08
 
 ////8MHz 50%SP 125Kbps.
 //#define MCP2515_CONF_VALUE_1
@@ -126,12 +137,23 @@ Flags.
 
 void mcp2515Reset();
 void mcp2515Set(uint8_t mode, uint8_t speed);
-void mcp2515WriteByte(uint8_t address, char byte);
-void mcp2515LoadDataSid(uint8_t buffer, uint8_t buffer_priority, uint16_t address, uint8_t address_mode, uint8_t rtr_mode, char *data, uint8_t length);
-uint8_t mcp2515GetStatus();
-uint8_t mcp2515GetTransmitStatus(uint8_t buffer);
+
+void mcp2515LoadTransmitBuffer(uint8_t buffer, uint8_t buffer_priority, uint16_t address, uint8_t address_mode, uint8_t rtr_mode, char *data, uint8_t length);
 void mcp2515TransmitNow(uint8_t buffer);
+void mcp2515WriteByte(uint8_t address, char byte);
+uint8_t mcp2515GetTransmitStatus(uint8_t buffer);
+
+uint8_t mcp2515GetStatus();
 uint8_t mcp2515GetTxErrorCount();
 uint8_t mcp2515GetRxErrorCount();
+
+void mcp2515ReadReceiveBuffer(uint8_t buffer);
+uint8_t mcp2515ReadByte(uint8_t register_address);
+uint16_t mcp2515GetReceiveId(uint8_t buffer);
+uint8_t mcp2515GetReceiveIdType(uint8_t buffer);
+uint8_t mcp2515GetReceiveDataLength(uint8_t buffer);
+uint8_t mcp2515GetReceiveRequestType(uint8_t buffer);
+char *mcp2515GetReceiveData(uint8_t buffer);
+uint8_t mcp2515GetReceiveMessageHealth(uint8_t buffer);
 
 #endif /* MCP2515_H_ */

@@ -30,10 +30,11 @@
 #define UART_TX_COMPLETE 0x40
 
 //Various UART modes.
-#define UART_DATA_REGISTER_EMPTY 0x20
-#define UART_RX_INTERRUPT_ENABLE 0x80
-#define UART_RX_ENABLE 0x10
 #define UART_TX_ENABLE 0x08
+#define UART_RX_ENABLE 0x10
+#define UART_DATA_REGISTER_EMPTY_INTERRUPT_ENABLE 0x20
+#define UART_TX_INTERRUPT_ENABLE 0x40
+#define UART_RX_INTERRUPT_ENABLE 0x80
 #define UART_2X_MODE 0x02
 #define UART_ASYNCHRONOUS_MODE 0x00
 #define UART_DATA_SIZE_5 0x00;
@@ -41,6 +42,17 @@
 #define UART_DATA_SIZE_7 0x04;
 #define UART_DATA_SIZE_8 0x06;
 //#define UART_DATA_SIZE_9 UCSR0C|= 0x06; UCSR0B|= 0x04;
+//LEDs.
+#ifndef UART_TX_LED
+#define UART_TX_LED 0x02
+#endif
+
+#ifndef UART_RX_LED
+#define UART_RX_LED 0x01
+#endif
+
+//Flags.
+#define UART_DATA_REGISTER_EMPTY 0x20
 
 //Parity and stop bits selection.
 #define UART_PARITY_NONE 0x00 
@@ -54,20 +66,25 @@
 #define UART_DATA_OVERRUN_ERROR 0x08
 #define UART_PARITY_ERROR 0x04
 #define UART_OK 0x00
+#define UART_TX_BUFFER_OK 1
+#define UART_RX_BUFFER_OK 1
+#define UART_TX_BUFFER_FULL 2
+#define UART_RX_BUFFER_FULL 3
+#define UART_TX_BUFFER_EMPTY 4
+#define UART_RX_BUFFER_EMPTY 5
+#define UART_UNDEFINED_CONDITION 100
 
-//Change according to the required RX buffer size.
-#define UART_RX_BUFFER_SIZE 64	
+#define UART_BUFFER_TYPE_TX 0
+#define UART_BUFFER_TYPE_RX 1
+#define UART_TX_BUFFER_SIZE 64
+#define UART_RX_BUFFER_SIZE 64
 
-//Buffer for Rx data.
-extern struct circular_buffer {
-	char buffer[UART_RX_BUFFER_SIZE];
-	uint8_t head;
-	uint8_t tail;
-} rx_buffer;
-
-//Functions definitions.
+/*
+Function definitions.
+*/
 //Set up the UART peripheral.
 void uartSet(uint16_t baud_rate, uint8_t data_bits, uint8_t parity, uint8_t stop_bits);
+void uartSetLed(uint8_t toggle);
 //Transmit a single character on the Tx line.
 void uartSendChar(char data);
 //Send a string without carriage return and newline.
@@ -75,11 +92,14 @@ void uartPrint(char *string_pointer);
 //Send a string with carriage return and newline.
 void uartPrintLn(char *string_pointer);
 //Pushes a received character into the Rx buffer.
-void uartRxBufferPush(struct circular_buffer *buff, uint8_t data);
+uint8_t uartBufferPush(uint8_t buffer_type, char data);
 //Pops a received character from the Rx buffer.
-char uartRxBufferPop(struct circular_buffer *buff);
+uint8_t uartBufferPop(uint8_t buffer_type, char *data);
 //Returns the number of unread characters in the Rx buffer.
-uint16_t uartAvailable();
+uint8_t uartAvailable(uint8_t buffer_type);
+uint8_t uartCount(uint8_t buffer_type);
+uint8_t uartIsFull(uint8_t buffer_type);
+uint8_t uartPeek(uint8_t buffer_type, int *data);
 //Read a character in the Rx buffer.
 char uartRead();
 //Wait till a character is received in the receive register.
