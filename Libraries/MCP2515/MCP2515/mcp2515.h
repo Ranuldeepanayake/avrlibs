@@ -5,9 +5,12 @@
  * Author: ranul
  */ 
 
+#include <stdbool.h>
 
 #ifndef MCP2515_H_
 #define MCP2515_H_
+
+#define MCP2515_DEBUG 1
 
 //Default port registers and the pin.
 #ifndef MCP2515_CS_DDR_REGISTER
@@ -29,6 +32,8 @@
 #ifndef MCP2515_ISR_PIN
 #define MCP2515_ISR_PIN 4
 #endif
+
+#define MCP2515_CAN_BUFFER_SIZE 8
 
 /*
 SPI commands.
@@ -55,7 +60,7 @@ SPI commands.
 /*
 Operation modes.
 */
-#define MCP2515_MODE_CONFIGURATION 0x87
+#define MCP2515_MODE_CONFIG 0x87
 #define MCP2515_MODE_LISTEN 0x67
 #define MCP2515_MODE_NORMAL 0x07
 #define MCP2515_MODE_LOOPBACK 0x47
@@ -100,12 +105,12 @@ Flags.
 #define MCP2515_TRANSMIT_BUFFER_0 0
 #define MCP2515_TRANSMIT_BUFFER_1 1
 #define MCP2515_TRANSMIT_BUFFER_2 2
-#define MCP2515_TRANSMIT_STANDARD_ADDRESS 0x00 
-#define MCP2515_TRANSMIT_EXTENDED_ADDRESS 0x08
-#define MCP2515_TRANSMIT_RTR_NO 0x00
-#define MCP2515_TRANSMIT_RTR_YES 0x40
-#define MCP2515_TRANSMIT_TXBNCTRL_TRANSMIT 0x08
-#define MCP2515_TRANSMIT_TXB0CTRL_STATUS_PENDING 0x08
+#define MCP2515_TRANSMIT_STANDARD_ADDRESS	0x00 
+#define MCP2515_TRANSMIT_EXTENDED_ADDRESS	0x08
+#define MCP2515_TRANSMIT_RTR_NO						0x00
+#define MCP2515_TRANSMIT_RTR_YES					0x40
+#define MCP2515_TRANSMIT_TXBNCTRL_TRANSMIT			0x08
+#define MCP2515_TRANSMIT_TXB0CTRL_STATUS_PENDING	0x08
 //Read.
 #define MCP2515_RECEIVE_BUFFER_0 0
 #define MCP2515_RECEIVE_BUFFER_1 1
@@ -113,41 +118,41 @@ Flags.
 #define MCP2515_RECEIVE_EXTENDED_ADDRESS 0x08
 #define MCP2515_RECEIVE_RTR_NO 0x00
 #define MCP2515_RECEIVE_RTR_YES 0x08
-
-////8MHz 50%SP 125Kbps.
-//#define MCP2515_CONF_VALUE_1
-//#define MCP2515_CONF_VALUE_2
-//#define MCP2515_CONF_VALUE_3
-//
-////8MHz 50%SP 500Kbps.
-//#define MCP2515_CONF_VALUE_1
-//#define MCP2515_CONF_VALUE_2
-//#define MCP2515_CONF_VALUE_3
-//
-////16MHz 50%SP 500Kbps.
-//#define MCP2515_CONF_VALUE_1
-//#define MCP2515_CONF_VALUE_2
-//#define MCP2515_CONF_VALUE_3
-//
-////16MHz 50%SP 1000Kbps.
-//#define MCP2515_CONF_VALUE_1
-//#define MCP2515_CONF_VALUE_2
-//#define MCP2515_CONF_VALUE_3
+//Interrupts.
+#define MCP2515_INTERRUPT_ENABLE_RX0	0x01
+#define MCP2515_INTERRUPT_ENABLE_TX0	0x04
+#define MCP2515_INTERRUPT_ENABLE_ERR	0x20
+#define MCP2515_INTERRUPT_ENABLE_MERR	0x80
+#define MCP2515_INTERRUPT_FLAG_RX0	0x01
+#define MCP2515_INTERRUPT_FLAG_TX0	0x04
+#define MCP2515_INTERRUPT_FLAG_ERR	0x20
+#define MCP2515_INTERRUPT_FLAG_MERR	0x80
 
 
+
+/*
+Function declaration.
+*/
 void mcp2515Reset();
 void mcp2515Set(uint8_t mode, uint8_t speed);
 
-void mcp2515LoadTransmitBuffer(uint8_t buffer, uint8_t buffer_priority, uint16_t address, uint8_t address_mode, uint8_t rtr_mode, char *data, uint8_t length);
-void mcp2515TransmitNow(uint8_t buffer);
+void mcp2515WriteTransmitBuffer(uint8_t buffer, uint8_t buffer_priority, uint16_t address, uint8_t address_mode, uint8_t rtr_mode, char *data, uint8_t length);
+void mcp2515Transmit(uint8_t buffer);
 void mcp2515WriteByte(uint8_t address, char byte);
 uint8_t mcp2515GetTransmitStatus(uint8_t buffer);
 
 uint8_t mcp2515GetStatus();
+void mcp2515EnableInterrupts();
+void mcp2515DisableInterrupts();
+uint8_t mcp2515GetInterrupts();
+void mcp2515ClearInterrupts(uint8_t interrupt);
+
+uint8_t mcp2515GetErrorFlags();
 uint8_t mcp2515GetTxErrorCount();
 uint8_t mcp2515GetRxErrorCount();
 
-void mcp2515ReadReceiveBuffer(uint8_t buffer);
+void mcp2515SetReceive(uint8_t buffer, uint8_t type, uint16_t message_id, uint16_t message_mask);
+uint8_t mcp2515ReceiveBufferPush(uint8_t buffer);
 uint8_t mcp2515ReadByte(uint8_t register_address);
 uint16_t mcp2515GetReceiveId(uint8_t buffer);
 uint8_t mcp2515GetReceiveIdType(uint8_t buffer);
@@ -155,5 +160,8 @@ uint8_t mcp2515GetReceiveDataLength(uint8_t buffer);
 uint8_t mcp2515GetReceiveRequestType(uint8_t buffer);
 char *mcp2515GetReceiveData(uint8_t buffer);
 uint8_t mcp2515GetReceiveMessageHealth(uint8_t buffer);
+
+void mcp2515DebugIntToHex(uint16_t input, char *temp_1);
+void mcp2515ClearStruct();
 
 #endif /* MCP2515_H_ */

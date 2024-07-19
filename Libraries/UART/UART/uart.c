@@ -4,7 +4,8 @@
  * Created: 30-Oct-18 6:54:33 PM
  * Author: Ranul Deepanayake.
  * UART library for the ATmega328P. Supports character transmission, reception, selectable baud rates, reception error detection and activity indication.
- * Supports baud rates of 9600- 57600 (other values may work but have not been tested).
+ * Runs in the asynchronous master 2x mode.
+ * Supports baud rates of 9600- 500000 (other values may work but have not been tested).
  * Circular buffer and interrupt based transmission and reception. Tx and Rx buffers sizes can be set individually. 
  * Supports 5- 8 bit data frames. Development for 9 bit data frames is pending.
  * Supports parities of none, even and odd.
@@ -16,6 +17,7 @@
 //Includes.
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <string.h>
 #include "uart.h"
 
 //Buffer for Tx.
@@ -92,18 +94,19 @@ ISR(USART_RX_vect){
 
 /*
 Initializes the UART peripheral to run on the asynchronous mode.
-A baud rate between 9600- 57600 is supported. Frames of 5- 8 data bits are supported.
+A baud rate between 9600- 500000 is supported. Frames of 5- 8 data bits are supported.
 Parities of none, even and odd are supported. Enables UART and global interrupts.
 */
 void uartSet(uint16_t baud_rate, uint8_t data_bits, uint8_t parity, uint8_t stop_bits){
 	cli();	//Disable global interrupts before setting up the UART peripheral.
 	
 	//Set the UART registers.
+	UCSR0A |= UART_2X_MODE;
 	UCSR0B |= (UART_RX_ENABLE | UART_TX_ENABLE); //Enable Tx and Rx.
-	UCSR0B |= (UART_RX_INTERRUPT_ENABLE); //Enable the necessary interrupts.
+	UCSR0B |= UART_RX_INTERRUPT_ENABLE; //Enable the necessary interrupts.
 	UCSR0C |= (UART_ASYNCHRONOUS_MODE | parity | stop_bits);	//Set mode, parity and stop bits.
+	UBRR0L = baud_rate;			//Set the baud rate low byte. 	
 	UBRR0H = baud_rate >> 8;	//Set the baud rate high byte.
-	UBRR0L = baud_rate;			//Set the baud rate low byte. 		
 	
 	//Set frame size.
 	switch(data_bits){
@@ -147,20 +150,30 @@ void uartSetLed(uint8_t toggle){
 Loads a string of characters into the Tx buffer. Carriage return and newline aren't sent.
 An ISR will perform the transmission.
 */
-void uartPrint(char *string_pointer){
+uint8_t uartPrint(char *string_pointer){
+	//if(strlen(string_pointer) > ((UART_TX_BUFFER_SIZE-1) - uartCount(UART_BUFFER_TYPE_TX))){
+		//return 0;
+	//}
+	
 	while((*string_pointer != UART_NULL_CHARACTER) && (!uartIsFull(UART_BUFFER_TYPE_TX))){ //Check for the null character in the string.
 		uartBufferPush(UART_BUFFER_TYPE_TX, *(string_pointer++)); //Pushes a character to the buffer.
 		//uartSendChar(*(string_pointer++)); //Deprecated.
 	}
 	
 	UCSR0B |= UART_DATA_REGISTER_EMPTY_INTERRUPT_ENABLE;	//Enable the UDRE interrupt to begin transmission through interrupts.
+	
+	return 1;
 }
 
 /*
 Loads a string of characters with carriage return and newline into the Tx buffer.
 An ISR will perform the transmission.
 */
-void uartPrintLn(char *string_pointer){
+uint8_t uartPrintLn(char *string_pointer){
+	//if(strlen(string_pointer)+2 > ((UART_TX_BUFFER_SIZE-1) - uartCount(UART_BUFFER_TYPE_TX))){
+		////return 0;
+	//}
+	
 	uint8_t incrementer = 0;
 	
 	//Check for the null character in the string and free space in the buffer. Free space is checked as an additional protection against buffer overflow and is not mandatory.
@@ -176,6 +189,8 @@ void uartPrintLn(char *string_pointer){
 	}
 	
 	UCSR0B |= UART_DATA_REGISTER_EMPTY_INTERRUPT_ENABLE;	//Enable the UDRE interrupt to start transmission through interrupts.
+	
+	return 1;
 }
 
 /*

@@ -4,7 +4,8 @@
  * Created: 30-Oct-18 6:54:33 PM
  * Author: Ranul Deepanayake.
  * UART library for the ATmega328P. Supports character transmission, reception, selectable baud rates, reception error detection and activity indication.
- * Supports baud rates of 9600- 57600 (other values may work but have not been tested).
+ * Runs in the asynchronous master 2x mode.
+ * Supports baud rates of 9600- 500000 (other values may work but have not been tested).
  * Circular buffer and interrupt based transmission and reception. Tx and Rx buffers sizes can be set individually. 
  * Supports 5- 8 bit data frames. Development for 9 bit data frames is pending.
  * Supports parities of none, even and odd.
@@ -29,12 +30,12 @@
 #define UART_RX_LED 0x08
 #endif
 //Calculations.
-#define UART_BAUD_RATE(BAUD_RATE) (((F_CPU)/(BAUD_RATE* 16UL))- 1)
+#define UART_BAUD_RATE(BAUD_RATE) (((F_CPU)/(BAUD_RATE* 8UL))- 1)
 //Buffer modifiers.
 #define UART_BUFFER_TYPE_TX 0
 #define UART_BUFFER_TYPE_RX 1
-#define UART_TX_BUFFER_SIZE 64
-#define UART_RX_BUFFER_SIZE 64
+#define UART_TX_BUFFER_SIZE 512
+#define UART_RX_BUFFER_SIZE 4
 //Various UART operational modes.
 #define UART_TX_ENABLE 0x08
 #define UART_RX_ENABLE 0x10
@@ -81,9 +82,9 @@ void uartSet(uint16_t baud_rate, uint8_t data_bits, uint8_t parity, uint8_t stop
 //Set up Tx and Rx LEDs. Uses PORTD.
 void uartSetLed(uint8_t toggle);
 //Transmit a string without carriage return and newline.
-void uartPrint(char *string_pointer);	
+uint8_t uartPrint(char *string_pointer);	
 //Transmit a string with carriage return and newline.
-void uartPrintLn(char *string_pointer);
+uint8_t uartPrintLn(char *string_pointer);
 //Push a character into the the selected buffer.
 uint8_t uartBufferPush(uint8_t buffer_type, char data);
 //Pop a character from the the selected buffer.
