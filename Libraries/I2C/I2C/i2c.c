@@ -10,9 +10,9 @@
  * The slave modes uses a single byte buffer.
  */ 
 
+#include <avr/interrupt.h> //For the I2C interrupt vector.
 #include "i2c.h"
 #include "timer.h"
-#include <avr/interrupt.h> //For the I2C interrupt vector.
 
 //Slave data receive buffer.
 volatile uint8_t slave_write_data_received_buffer = 0;

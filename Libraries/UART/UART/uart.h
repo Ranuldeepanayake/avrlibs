@@ -34,7 +34,7 @@
 //Buffer modifiers.
 #define UART_BUFFER_TYPE_TX 0
 #define UART_BUFFER_TYPE_RX 1
-#define UART_TX_BUFFER_SIZE 512
+#define UART_TX_BUFFER_SIZE 128
 #define UART_RX_BUFFER_SIZE 4
 //Various UART operational modes.
 #define UART_TX_ENABLE 0x08
