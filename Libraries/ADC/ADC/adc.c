@@ -1,37 +1,50 @@
 /*
- * adc.c
+ * adc.h
  *
- * Created: 29-Jan-19 5:29:52 PM
+ * Created: 29-Jan-19 5:30:05 PM
  * Author: Ranul Deepanayake
+ * ADC library for the ATmega328P. 
+ * Uses the single conversion mode in a round-robin manner without interrupts.
+ * Supports 10 bit resolution.
+ * Supports 6 channel and 8 channel packages.
+ * Supports a selectable VREF source.
+ * Supports the inbuilt temperature sensor, band gap reference and ground auxiliary channels.
+ * Uses right adjusted ADC readings.
+ * Supports digital pin input buffer disabling for power saving.
+ * No buffers or smoothening functions are used.
+ * Supports debugging over UART.
  */ 
 
-
 #include "adc.h"
-
 #ifdef ADC_DEBUG
 	#include <stdlib.h>
 	#include <string.h>
 	#include "uart.h"
 #endif
 
+
+//Array initialization based on the number of channels present.
 #if ADC_PACKAGE == ADC_PACKAGE_PDIP
 	volatile uint16_t _adc_results[ADC_CHANNEL_COUNT] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}; //Initialize the array.
 #elif ADC_PACKAGE != ADC_PACKAGE_PDIP
 	volatile uint16_t _adc_results[ADC_CHANNEL_COUNT] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}; //Initialize the array.
 #endif
 
+//Global variables.
 volatile uint8_t _adc_channel_index = ADC_CHANNEL_0, _adc_vref_temp = 0;
 uint8_t _adc_mode = ADC_MODE_SINGLE_CONVERSION;
 
 /*
-Set the ADC peripheral.
+Set the ADC peripheral. Selectable mode, prescaler and vref source.
+The single conversion mode starts by initially reading ADC channel 0. Subsequent channels are read by adcRead() in a round robin manner.
+Currently supports the single conversion mode only.
 */
-void adcSet(uint8_t mode, uint8_t channel, uint8_t prescaler, uint8_t vref){
+void adcSet(uint8_t mode, uint8_t prescaler, uint8_t vref){
 	//Save the vref value to a global variable to be used within the ISR for safely changing the MUX bits.
 	_adc_vref_temp = vref;
 	
 	if(mode == ADC_MODE_SINGLE_CONVERSION){
-		//Free running mode.
+		//Single conversion mode.
 		_adc_mode = ADC_MODE_SINGLE_CONVERSION;
 		ADMUX |= (vref | ADC_CHANNEL_0); //Select the voltage reference and channel 0 for the initial reading.
 		ADCSRA |= ((1 << ADEN) | prescaler); //Enable the ADC, enable triggers, set pre-scalers and enable interrupts.
@@ -48,26 +61,24 @@ void adcSet(uint8_t mode, uint8_t channel, uint8_t prescaler, uint8_t vref){
 }
 
 /*
-Return a 10 bit ADC reading in single conversion mode.
+Return a 10 bit ADC reading in the single conversion mode. Reads all ADC channels with each call to this function in a round robin manner. 
+ADC channel readings are stored in an array with one element per channel. Not recommended to be used with 'adcReadWait()'.
 */
 uint16_t adcRead(uint8_t channel){
 	//If no conversions are pending.
 	if(!(ADCSRA & (1 << ADSC))){
-		
-		//ADCW must be read as early as possible.
-		//The next conversion starts the moment the ISR is entered.
-		//After a MUX change, the corresponding ADCW value will be captured only in the next ISR cycle.
 
-		_adc_results[_adc_channel_index] = ADCW; //Read the previous other than for the first reading.
+		_adc_results[_adc_channel_index] = ADCW; //Read the current reading.
 		
-		//Increment the channel index to read the next ADC channel after the ISR exits.
+		//Increment the channel index to read the next ADC channel during the next call to this function.
 		_adc_channel_index++;
 		
-		//Roll over to channel 1. This has to be done before the ISR ends.
+		//Roll over to channel 0.
 		if(_adc_channel_index == ADC_CHANNEL_COUNT){
 			_adc_channel_index = ADC_CHANNEL_0;
 		}
 		
+		//Conditional checker to support various package types will more or less ADC channels.
 		#if ADC_PACKAGE == ADC_PACKAGE_PDIP
 			//Set the new channel. The following conditional checker is needed since ADC channel numbers are not contiguous from channel 6.
 			if(_adc_channel_index <= ADC_CHANNEL_5){
@@ -127,7 +138,8 @@ uint16_t adcRead(uint8_t channel){
 
 
 /*
-Return a 10 bit ADC reading in single conversion mode.
+Returns a 10 bit ADC reading in single conversion mode but through polling. Only reads the channel specified in the argument.
+A delay of (1 / ADC frequency) * 13 will be introduced when polling. Not recommended to be used with 'adcRead()'.
 */
 uint16_t adcReadWait(uint8_t channel){
 	//Do not change the channel if a conversion is in progress.
@@ -153,12 +165,16 @@ uint16_t adcReadWait(uint8_t channel){
 	return value;
 }
 
+/*
+Returns the value of the internal temperature sensor in Celcius. Calls the 'adcRead()' function with the temperature sensor channel. 
+Uses a formula for the temperature calculation. Calibration might be needed for a more accurate reading. 
+*/
 uint16_t adcReadTemperatureSensor(){
 	uint16_t temperature = 0;
 	
 	uint16_t raw_value = adcRead(ADC_TEMP);
 
-	//Temperature calculation in celcius.
+	//Temperature calculation in Celcius.
 	temperature = ((uint16_t)((raw_value- 242)* (85- (-45))/ (380- 242)+ (-45)))- 35;
 	
 	#if ADC_DEBUG >= 1

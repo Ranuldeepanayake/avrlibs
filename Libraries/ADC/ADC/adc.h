@@ -3,11 +3,16 @@
  *
  * Created: 29-Jan-19 5:30:05 PM
  * Author: Ranul Deepanayake
- * ADC library for the ATmega328P. Uses single conversion mode.
- * Supports 6 channel and 8 channel package models.
- * Supports selectable AREF source.
- * Supports the inbuilt temperature sensor.
+ * ADC library for the ATmega328P. 
+ * Uses the single conversion mode in a round-robin manner without interrupts.
+ * Supports 10 bit resolution.
+ * Supports 6 channel and 8 channel packages.
+ * Supports a selectable VREF source.
+ * Supports the inbuilt temperature sensor, band gap reference and ground auxiliary channels.
  * Uses right adjusted ADC readings.
+ * Supports digital pin input buffer disabling for power saving.
+ * No buffers or smoothening functions are used.
+ * Supports debugging over UART.
  */ 
 
 
@@ -19,9 +24,9 @@
 
 //Debug level.
 #ifndef ADC_DEBUG
-	#define ADC_DEBUG 2
+	#define ADC_DEBUG 0
 #endif
-//ADC pin numbers.
+//ADC pin naming.
 #define ADC_0 0
 #define ADC_1 1
 #define ADC_2 2
@@ -80,25 +85,25 @@
 //ADC modes.
 #define ADC_MODE_SINGLE_CONVERSION 0
 #define ADC_MODE_FREE_RUNNING 1
-//Options.
-#define ADC_TRIGGER_FREE_RUNNING 0x00
-#define ADC_INTERRUPT_ENABLE 0x08
-#define ADC_INTERRUPT_DISABLE 0x00
+//Flags.
 #define ADC_CHANNEL_UNSET 0x0F
 
-//Functions.
+/*
+Functions.
+*/
 //Set up the ADC peripheral.
-void adcSet(uint8_t mode, uint8_t channel, uint8_t prescaler, uint8_t vref);
-//Return a 10 bit ADC reading in free-running mode.
+void adcSet(uint8_t mode, uint8_t prescaler, uint8_t vref);
+//Return a 10 bit ADC reading in single conversion mode.
 uint16_t adcRead(uint8_t channel);
 //Return a 10 bit ADC reading in single conversion mode.
 uint16_t adcReadWait(uint8_t channel);
-//Return the temperature from the internal temperature sensor (in Celcius).
+//Return the temperature from the internal temperature sensor in Celcius.
 uint16_t adcReadTemperatureSensor();
 //Disable the digital input buffer of a channel for power saving.
 void adcDisableDigitalInputBuffer(uint8_t channel);
 //Enable the digital input buffer of a channel.
 void adcEnableDigitalInputBuffer(uint8_t channel);
+//Supporting function for debugging.
 void adcDebugIntToHex(uint16_t input, char *temp_1);
 
 /*
@@ -107,12 +112,12 @@ Example implementation.
 
 int main(void)
 {
-	adcSet(ADC_MODE_FREE_RUNNING, ADC_CHANNEL_0, ADC_PRESCALER_128, ADC_VREF_AVCC);
+	adcSet(ADC_MODE_FREE_RUNNING, ADC_PRESCALER_128, ADC_VREF_AVCC);
 	adcDisableDigitalInputBuffer(0x02); //Optional for power saving.
 	
 	while (1)
 	{
-		uint8_t = adcRead(ADC_CHANNEL_1);
+		uint8_t = adcRead(ADC_0);
 	}
 }
 
