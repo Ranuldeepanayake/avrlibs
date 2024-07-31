@@ -18,7 +18,7 @@
 #define EEPROM_DEBUG_LEVEL_1 1
 #define EEPROM_DEBUG_LEVEL_2 2
 //The debug switch.
-#define EEPROM_DEBUG_LEVEL EEPROM_DEBUG_LEVEL_0
+#define EEPROM_DEBUG_LEVEL EEPROM_DEBUG_LEVEL_1
 //Address range definition.
 #if mcu == atmega328p
 	#define EEPROM_SIZE 1024
