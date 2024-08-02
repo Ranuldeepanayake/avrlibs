@@ -1,9 +1,14 @@
 /*
- * pwm.h
+ * PWM.c
  *
- * Created: 31-Jul-24 11:32:44 AM
- * Author: ranul
- *
+ * Created: 04-Oct-18 5:26:56 PM
+ * Author : Ranul Deeepanayake
+ * Demonstrates the use of PWM using timers and counters.
+ * Timer modes of operation: Fast PWM- good for communication, phase correct PWM- good for motor and light control, frequency and phase correct PWM.
+ * Compare output modes: Disabled, normal, toggle, clear on match (non- inverting) and set on match (inverting). 
+ * Timer sets the frequency.
+ * Counter sets PWM.
+ * ***Fast PWM has twice the frequency of phase correct PWM.	
  */ 
 
 #ifndef PWM_H_
@@ -86,6 +91,10 @@
 	#define TIMER_2_PIN_A (1 << PORTB3)
 	#define TIMER_2_PIN_B (1 << PORTD3)
 #endif
+//Millis and micros.
+#define TIMER_MILLIS_OCR 0xF9 //249
+#define TIMER_MICROS_OCR 0x01 //1
+#define TIMER_MICROS_MULTIPLIER 8
 
 /*
 Functions.
@@ -99,6 +108,14 @@ void timer0Write(uint8_t channel, uint8_t value);
 //Timer 2.
 void timer2Set(uint8_t mode, uint8_t output, uint8_t prescaler);
 void timer2Write(uint8_t channel, uint8_t value);
+//Set timer to count milliseconds.
+void timer2SetMillis();
+//Set timer to count microseconds.
+void timer2SetMicros();
+//Get milliseconds.
+uint16_t timer2GetMillis();
+//Get microseconds.
+uint16_t timer2GetMicros();
 //Common.
 void timerSetOutputPins(uint8_t timer, uint8_t channel);
 void timerSetPrescaler(uint8_t timer, uint8_t prescaler);
@@ -107,7 +124,7 @@ void timerDisableInterrupts(uint8_t timer, uint8_t interrupt);
 
 /*
 
-Example implementation.
+Example implementation for PWM or frequency generation.
 
 int main(void)
 {
@@ -118,6 +135,29 @@ int main(void)
 	while (1)
 	{
 		timer2Write(TIMER_N_CHANNEL_B, (uint8_t) (adcRead(ADC_0) / 4));
+	}
+}
+
+
+Example implementation for millis and micros.
+
+int main(void)
+{
+	uint16_t previous_time= 0, current_time= 0, on_time= 500, total_time= 1000;
+	timer2SetMillis();
+	DDRB |= 0x20;
+	
+	while (1)
+	{
+		current_time= timer2GetMillis();
+		if((current_time- previous_time) >= total_time){
+			PORTB |= 0x20;
+			previous_time = timer2GetMillis();
+		}
+		
+		if(current_time - previous_time >= on_time){
+			PORTB &= ~(0x20);
+		}
 	}
 }
 
