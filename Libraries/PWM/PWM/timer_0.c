@@ -2,6 +2,9 @@
 #include <avr/interrupt.h>
 #include "timer.h"
 
+/*
+Sets the timer with the specified mode, output pin behavior and prescaler.
+*/
 void timer0Set(uint8_t mode, uint8_t output, uint8_t prescaler){
 	TCCR0A |= output; //Output pin behavior.
 	
@@ -49,6 +52,5 @@ void timer0Write(uint8_t channel, uint8_t value){
 			break;
 	}
 }
-
 
 

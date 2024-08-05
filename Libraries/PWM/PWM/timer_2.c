@@ -11,6 +11,9 @@ ISR(TIMER2_COMPA_vect){
 	_time_units++;	//Increment the number of milliseconds or microseconds.
 }
 
+/*
+Sets the timer with the specified mode, output pin behavior and prescaler.
+*/
 void timer2Set(uint8_t mode, uint8_t output, uint8_t prescaler){
 	TCCR2A |= output; //Output pin behavior.
 	
