@@ -30,6 +30,9 @@ Phase correct PWM with OCRnx:	Variable frequency through OCR0A or ICR with dual 
  
 Phase and frequency correct PWM: Dual slope. Variable PWM width through ICR or OCR1A?? (Not tested).
 
+
+***On modes where the TOP is set with OCRxA, pin OCxB will also be controlled by the OCRxA value. On other modes, pin OCxB will be controlled by the OCRxB value.
+
  */ 
 
 #include <avr/io.h>
