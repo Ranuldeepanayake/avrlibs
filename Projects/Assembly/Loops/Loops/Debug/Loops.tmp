@@ -1,0 +1,38 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.7</VERSION>
+ <DEVICE>"ATmega328P"</DEVICE>
+ <WORKING_DIR>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Loops\Loops\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\avrasm\inc</DIR>
+  <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Loops\Loops\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\avrasm\inc\m328pdef.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Loops\Loops\Debug\Loops.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>Loops.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>Loops.map</FILE>
+  <FILE>Loops.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <setup><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Loops\Loops\main.asm</FILE><LINE>46</LINE></setup>
+  <loop><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Loops\Loops\main.asm</FILE><LINE>51</LINE></loop>
+  <for_loop_routine_3><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Loops\Loops\main.asm</FILE><LINE>117</LINE></for_loop_routine_3>
+  <for_loop_1><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Loops\Loops\main.asm</FILE><LINE>58</LINE></for_loop_1>
+  <for_loop_2><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Loops\Loops\main.asm</FILE><LINE>66</LINE></for_loop_2>
+  <while_routine_1><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Loops\Loops\main.asm</FILE><LINE>75</LINE></while_routine_1>
+  <while_loop_1><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Loops\Loops\main.asm</FILE><LINE>87</LINE></while_loop_1>
+  <while_routine_1_end><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Loops\Loops\main.asm</FILE><LINE>96</LINE></while_routine_1_end>
+  <do_while_routine_1><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Loops\Loops\main.asm</FILE><LINE>104</LINE></do_while_routine_1>
+  <do_while_loop_1><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Loops\Loops\main.asm</FILE><LINE>108</LINE></do_while_loop_1>
+  <for_loop_3><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Loops\Loops\main.asm</FILE><LINE>123</LINE></for_loop_3>
+  <for_loop3_end><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Loops\Loops\main.asm</FILE><LINE>130</LINE></for_loop3_end>
+ </LABELS>
+</ASSEMBLER_INFO>

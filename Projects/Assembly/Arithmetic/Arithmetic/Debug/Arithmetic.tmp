@@ -1,0 +1,47 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.7</VERSION>
+ <DEVICE>"ATmega328P"</DEVICE>
+ <WORKING_DIR>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Arithmetic\Arithmetic\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\avrasm\inc</DIR>
+  <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Arithmetic\Arithmetic\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\avrasm\inc\m328pdef.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Arithmetic\Arithmetic\Debug\Arithmetic.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>Arithmetic.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>Arithmetic.map</FILE>
+  <FILE>Arithmetic.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <reset><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Arithmetic\Arithmetic\main.asm</FILE><LINE>29</LINE></reset>
+  <loop><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Arithmetic\Arithmetic\main.asm</FILE><LINE>32</LINE></loop>
+  <b16xb16_unsigned_mul><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Arithmetic\Arithmetic\main.asm</FILE><LINE>233</LINE></b16xb16_unsigned_mul>
+  <add_1><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Arithmetic\Arithmetic\main.asm</FILE><LINE>53</LINE></add_1>
+  <add_2><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Arithmetic\Arithmetic\main.asm</FILE><LINE>60</LINE></add_2>
+  <add_3><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Arithmetic\Arithmetic\main.asm</FILE><LINE>69</LINE></add_3>
+  <add_4><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Arithmetic\Arithmetic\main.asm</FILE><LINE>75</LINE></add_4>
+  <add_5><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Arithmetic\Arithmetic\main.asm</FILE><LINE>81</LINE></add_5>
+  <add_6><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Arithmetic\Arithmetic\main.asm</FILE><LINE>91</LINE></add_6>
+  <adc_1><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Arithmetic\Arithmetic\main.asm</FILE><LINE>100</LINE></adc_1>
+  <sub_1><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Arithmetic\Arithmetic\main.asm</FILE><LINE>109</LINE></sub_1>
+  <sub_2><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Arithmetic\Arithmetic\main.asm</FILE><LINE>115</LINE></sub_2>
+  <sub_3><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Arithmetic\Arithmetic\main.asm</FILE><LINE>121</LINE></sub_3>
+  <subi_1><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Arithmetic\Arithmetic\main.asm</FILE><LINE>127</LINE></subi_1>
+  <sbc_1><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Arithmetic\Arithmetic\main.asm</FILE><LINE>132</LINE></sbc_1>
+  <multiply_8_unsigned><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Arithmetic\Arithmetic\main.asm</FILE><LINE>141</LINE></multiply_8_unsigned>
+  <multiply_8_unsigned_a><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Arithmetic\Arithmetic\main.asm</FILE><LINE>147</LINE></multiply_8_unsigned_a>
+  <multiply_8_unsigned_b><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Arithmetic\Arithmetic\main.asm</FILE><LINE>151</LINE></multiply_8_unsigned_b>
+  <mul_1><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Arithmetic\Arithmetic\main.asm</FILE><LINE>158</LINE></mul_1>
+  <muls_1><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Arithmetic\Arithmetic\main.asm</FILE><LINE>166</LINE></muls_1>
+  <mulsu_1><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Arithmetic\Arithmetic\main.asm</FILE><LINE>174</LINE></mulsu_1>
+ </LABELS>
+</ASSEMBLER_INFO>

@@ -1,0 +1,28 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.7</VERSION>
+ <DEVICE>"ATmega328P"</DEVICE>
+ <WORKING_DIR>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Macros\Macros\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\avrasm\inc</DIR>
+  <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Macros\Macros\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\avrasm\inc\m328pdef.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Macros\Macros\Debug\Macros.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>Macros.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>Macros.map</FILE>
+  <FILE>Macros.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <setup><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Macros\Macros\main.asm</FILE><LINE>52</LINE></setup>
+  <loop><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Macros\Macros\main.asm</FILE><LINE>56</LINE></loop>
+ </LABELS>
+</ASSEMBLER_INFO>

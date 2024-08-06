@@ -1,0 +1,29 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.7</VERSION>
+ <DEVICE>"ATmega328P"</DEVICE>
+ <WORKING_DIR>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Stack Pointer\Stack Pointer\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\avrasm\inc</DIR>
+  <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Stack Pointer\Stack Pointer\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\avrasm\inc\m328pdef.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Stack Pointer\Stack Pointer\Debug\Stack Pointer.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>Stack Pointer.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>Stack Pointer.map</FILE>
+  <FILE>Stack Pointer.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <setup><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Stack Pointer\Stack Pointer\main.asm</FILE><LINE>31</LINE></setup>
+  <delay><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Stack Pointer\Stack Pointer\main.asm</FILE><LINE>47</LINE></delay>
+  <loop><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Stack Pointer\Stack Pointer\main.asm</FILE><LINE>49</LINE></loop>
+ </LABELS>
+</ASSEMBLER_INFO>

@@ -1,46 +1,10 @@
 #Files to ignore.
-*.atsln
-*.cproj
-*.xml
-main.c
+#*.atsln
+#*.cproj
+#*.xml
+#main.c
 
 #Folders to ignore.
-Debug/
-Release/
+#Debug/
+#Release/
 *.vs
-
-#subdirectory file/folder cleanup.
-#ADC
-/ADC/ADC/uart.h 
-/ADC/ADC/uart.c
-
-#DHT11
-/DHT11/DHT11/uart.h 
-/DHT11/DHT11/uart.c
-
-#I2C
-/I2C/I2C/uart.h 
-/I2C/I2C/uart.c
-
-#SSD1306
-/SSD1306/SSD1306/uart.h 
-/SSD1306/SSD1306/uart.c
-
-#Timer
-/Timer/Timer/uart.h 
-/Timer/Timer/uart.c
-
-#Rotary Encoder
-/Rotary Encoder/Rotary Encoder/uart.h
-/Rotary Encoder/Rotary Encoder/uart.c
-
-#BMP280
-/BMP280/BMP280/uart.h
-/BMP280/BMP280/uart.c
-/BMP280/BMP280/i2c.h
-/BMP280/BMP280/i2c.c
-
-#RAM Dump
-#Stepper Motor
-#UART
-#DS3231

@@ -1,0 +1,283 @@
+
+EEPROM to Flash.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000000  00800100  00800100  000001f6  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         000001a2  00007000  00007000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .comment      00000030  00000000  00000000  000001f6  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000228  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000028  00000000  00000000  00000268  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   000007a0  00000000  00000000  00000290  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 000006bb  00000000  00000000  00000a30  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   000002d9  00000000  00000000  000010eb  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  0000005c  00000000  00000000  000013c4  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    000003d9  00000000  00000000  00001420  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    00000162  00000000  00000000  000017f9  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000018  00000000  00000000  0000195b  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00007000 <__vectors>:
+    7000:	0c 94 34 38 	jmp	0x7068	; 0x7068 <__ctors_end>
+    7004:	0c 94 49 38 	jmp	0x7092	; 0x7092 <__bad_interrupt>
+    7008:	0c 94 49 38 	jmp	0x7092	; 0x7092 <__bad_interrupt>
+    700c:	0c 94 49 38 	jmp	0x7092	; 0x7092 <__bad_interrupt>
+    7010:	0c 94 49 38 	jmp	0x7092	; 0x7092 <__bad_interrupt>
+    7014:	0c 94 49 38 	jmp	0x7092	; 0x7092 <__bad_interrupt>
+    7018:	0c 94 49 38 	jmp	0x7092	; 0x7092 <__bad_interrupt>
+    701c:	0c 94 49 38 	jmp	0x7092	; 0x7092 <__bad_interrupt>
+    7020:	0c 94 49 38 	jmp	0x7092	; 0x7092 <__bad_interrupt>
+    7024:	0c 94 49 38 	jmp	0x7092	; 0x7092 <__bad_interrupt>
+    7028:	0c 94 49 38 	jmp	0x7092	; 0x7092 <__bad_interrupt>
+    702c:	0c 94 49 38 	jmp	0x7092	; 0x7092 <__bad_interrupt>
+    7030:	0c 94 49 38 	jmp	0x7092	; 0x7092 <__bad_interrupt>
+    7034:	0c 94 49 38 	jmp	0x7092	; 0x7092 <__bad_interrupt>
+    7038:	0c 94 49 38 	jmp	0x7092	; 0x7092 <__bad_interrupt>
+    703c:	0c 94 49 38 	jmp	0x7092	; 0x7092 <__bad_interrupt>
+    7040:	0c 94 49 38 	jmp	0x7092	; 0x7092 <__bad_interrupt>
+    7044:	0c 94 49 38 	jmp	0x7092	; 0x7092 <__bad_interrupt>
+    7048:	0c 94 49 38 	jmp	0x7092	; 0x7092 <__bad_interrupt>
+    704c:	0c 94 49 38 	jmp	0x7092	; 0x7092 <__bad_interrupt>
+    7050:	0c 94 49 38 	jmp	0x7092	; 0x7092 <__bad_interrupt>
+    7054:	0c 94 49 38 	jmp	0x7092	; 0x7092 <__bad_interrupt>
+    7058:	0c 94 49 38 	jmp	0x7092	; 0x7092 <__bad_interrupt>
+    705c:	0c 94 49 38 	jmp	0x7092	; 0x7092 <__bad_interrupt>
+    7060:	0c 94 49 38 	jmp	0x7092	; 0x7092 <__bad_interrupt>
+    7064:	0c 94 49 38 	jmp	0x7092	; 0x7092 <__bad_interrupt>
+
+00007068 <__ctors_end>:
+    7068:	11 24       	eor	r1, r1
+    706a:	1f be       	out	0x3f, r1	; 63
+    706c:	cf ef       	ldi	r28, 0xFF	; 255
+    706e:	d8 e0       	ldi	r29, 0x08	; 8
+    7070:	de bf       	out	0x3e, r29	; 62
+    7072:	cd bf       	out	0x3d, r28	; 61
+
+00007074 <__do_copy_data>:
+    7074:	11 e0       	ldi	r17, 0x01	; 1
+    7076:	a0 e0       	ldi	r26, 0x00	; 0
+    7078:	b1 e0       	ldi	r27, 0x01	; 1
+    707a:	e2 ea       	ldi	r30, 0xA2	; 162
+    707c:	f1 e7       	ldi	r31, 0x71	; 113
+    707e:	02 c0       	rjmp	.+4      	; 0x7084 <__do_copy_data+0x10>
+    7080:	05 90       	lpm	r0, Z+
+    7082:	0d 92       	st	X+, r0
+    7084:	a0 30       	cpi	r26, 0x00	; 0
+    7086:	b1 07       	cpc	r27, r17
+    7088:	d9 f7       	brne	.-10     	; 0x7080 <__do_copy_data+0xc>
+    708a:	0e 94 9c 38 	call	0x7138	; 0x7138 <main>
+    708e:	0c 94 cf 38 	jmp	0x719e	; 0x719e <_exit>
+
+00007092 <__bad_interrupt>:
+    7092:	0c 94 00 38 	jmp	0x7000	; 0x7000 <__vectors>
+
+00007096 <writePage>:
+    {
+		
+    }
+}
+
+void writePage(uint16_t page_start_address){
+    7096:	cf 92       	push	r12
+    7098:	df 92       	push	r13
+    709a:	ef 92       	push	r14
+    709c:	ff 92       	push	r15
+    709e:	0f 93       	push	r16
+    70a0:	1f 93       	push	r17
+    70a2:	cf 93       	push	r28
+    70a4:	df 93       	push	r29
+    70a6:	7c 01       	movw	r14, r24
+	char *eeprom_data = 0;
+	uint8_t eeprom_address = page_start_address;
+    70a8:	08 2f       	mov	r16, r24
+	uint16_t data_temp = 0;
+	
+	
+	cli();									//Disable interrupts.
+    70aa:	f8 94       	cli
+	boot_page_erase(page_start_address);	//Erase the page to be written (byte address of the page start).
+    70ac:	83 e0       	ldi	r24, 0x03	; 3
+    70ae:	f7 01       	movw	r30, r14
+    70b0:	80 93 57 00 	sts	0x0057, r24	; 0x800057 <__TEXT_REGION_LENGTH__+0x7f8057>
+    70b4:	e8 95       	spm
+	boot_spm_busy_wait();					//Wait till the erase is complete.
+    70b6:	07 b6       	in	r0, 0x37	; 55
+    70b8:	00 fc       	sbrc	r0, 0
+    70ba:	fd cf       	rjmp	.-6      	; 0x70b6 <writePage+0x20>
+    70bc:	10 e0       	ldi	r17, 0x00	; 0
+    70be:	24 c0       	rjmp	.+72     	; 0x7108 <writePage+0x72>
+	
+	//Fill the page write buffer with bytes, not words.
+	for(uint8_t i = 0; i < PAGE_SIZE_WORDS; i += 2){		//Increment two addresses since data is written byte-wise even though addressing is done word-wise (??).
+		
+		eepromReadByte(eeprom_address, eeprom_data);		
+    70c0:	60 e0       	ldi	r22, 0x00	; 0
+    70c2:	70 e0       	ldi	r23, 0x00	; 0
+    70c4:	80 2f       	mov	r24, r16
+    70c6:	90 e0       	ldi	r25, 0x00	; 0
+    70c8:	0e 94 b1 38 	call	0x7162	; 0x7162 <eepromReadByte>
+		data_temp = *eeprom_data;							//Convert to little endian when passing to boot_page_fill(). LSB first and MSB second.
+    70cc:	c1 2c       	mov	r12, r1
+    70ce:	d1 2c       	mov	r13, r1
+    70d0:	f6 01       	movw	r30, r12
+    70d2:	c0 81       	ld	r28, Z
+    70d4:	d0 e0       	ldi	r29, 0x00	; 0
+		eeprom_address++;									//Increment the EEEPROM address to read the MSB.	
+    70d6:	81 e0       	ldi	r24, 0x01	; 1
+    70d8:	80 0f       	add	r24, r16
+		
+		eepromReadByte(eeprom_address, eeprom_data);		
+    70da:	60 e0       	ldi	r22, 0x00	; 0
+    70dc:	70 e0       	ldi	r23, 0x00	; 0
+    70de:	90 e0       	ldi	r25, 0x00	; 0
+    70e0:	0e 94 b1 38 	call	0x7162	; 0x7162 <eepromReadByte>
+		data_temp |= (*eeprom_data << 8);					//Convert to little endian when passing to boot_page_fill(). LSB first and MSB second.
+    70e4:	f6 01       	movw	r30, r12
+    70e6:	80 81       	ld	r24, Z
+    70e8:	90 e0       	ldi	r25, 0x00	; 0
+    70ea:	98 2f       	mov	r25, r24
+    70ec:	88 27       	eor	r24, r24
+    70ee:	c8 2b       	or	r28, r24
+    70f0:	d9 2b       	or	r29, r25
+		eeprom_address++;									//Increment the EEEPROM address to read the next cycle's LSB.
+    70f2:	0e 5f       	subi	r16, 0xFE	; 254
+		
+		boot_page_fill(page_start_address + i, data_temp); //LS byte address of a word address and a data word.
+    70f4:	f7 01       	movw	r30, r14
+    70f6:	e1 0f       	add	r30, r17
+    70f8:	f1 1d       	adc	r31, r1
+    70fa:	81 e0       	ldi	r24, 0x01	; 1
+    70fc:	0e 01       	movw	r0, r28
+    70fe:	80 93 57 00 	sts	0x0057, r24	; 0x800057 <__TEXT_REGION_LENGTH__+0x7f8057>
+    7102:	e8 95       	spm
+    7104:	11 24       	eor	r1, r1
+	cli();									//Disable interrupts.
+	boot_page_erase(page_start_address);	//Erase the page to be written (byte address of the page start).
+	boot_spm_busy_wait();					//Wait till the erase is complete.
+	
+	//Fill the page write buffer with bytes, not words.
+	for(uint8_t i = 0; i < PAGE_SIZE_WORDS; i += 2){		//Increment two addresses since data is written byte-wise even though addressing is done word-wise (??).
+    7106:	1e 5f       	subi	r17, 0xFE	; 254
+    7108:	10 34       	cpi	r17, 0x40	; 64
+    710a:	d0 f2       	brcs	.-76     	; 0x70c0 <writePage+0x2a>
+		
+		boot_page_fill(page_start_address + i, data_temp); //LS byte address of a word address and a data word.
+		
+	}
+	
+	boot_page_write(page_start_address);	//Write data to the flash (byte address of the page start).
+    710c:	85 e0       	ldi	r24, 0x05	; 5
+    710e:	f7 01       	movw	r30, r14
+    7110:	80 93 57 00 	sts	0x0057, r24	; 0x800057 <__TEXT_REGION_LENGTH__+0x7f8057>
+    7114:	e8 95       	spm
+	boot_spm_busy_wait();					//Wait till the write is complete.
+    7116:	07 b6       	in	r0, 0x37	; 55
+    7118:	00 fc       	sbrc	r0, 0
+    711a:	fd cf       	rjmp	.-6      	; 0x7116 <writePage+0x80>
+	
+	boot_rww_enable();						//Re-enable reading the RWW section after programming the RWW section (required when executing code in the application section).
+    711c:	81 e1       	ldi	r24, 0x11	; 17
+    711e:	80 93 57 00 	sts	0x0057, r24	; 0x800057 <__TEXT_REGION_LENGTH__+0x7f8057>
+    7122:	e8 95       	spm
+	sei();									//Re-enable interrupts.
+    7124:	78 94       	sei
+}
+    7126:	df 91       	pop	r29
+    7128:	cf 91       	pop	r28
+    712a:	1f 91       	pop	r17
+    712c:	0f 91       	pop	r16
+    712e:	ff 90       	pop	r15
+    7130:	ef 90       	pop	r14
+    7132:	df 90       	pop	r13
+    7134:	cf 90       	pop	r12
+    7136:	08 95       	ret
+
+00007138 <main>:
+	//uint16_t *crc = 0;
+	//Write the blink program's instructions from RAM to the EEPROM. This can be skipped and the instructions can be manually flashed to the EEPROM through a programming tool.
+	//eepromWrite(0, 180, blink_program, crc);
+	
+	//Write a page in the application flash section. Data from the EEPROM is loaded within the function itself.
+	for(uint32_t page = PAGE_START_ADDRESS; page <= (PAGE_SIZE_BYTES * 2); page += PAGE_SIZE_BYTES){
+    7138:	c1 2c       	mov	r12, r1
+    713a:	d1 2c       	mov	r13, r1
+    713c:	76 01       	movw	r14, r12
+    713e:	08 c0       	rjmp	.+16     	; 0x7150 <main+0x18>
+		writePage(page);		
+    7140:	c6 01       	movw	r24, r12
+    7142:	0e 94 4b 38 	call	0x7096	; 0x7096 <writePage>
+	//uint16_t *crc = 0;
+	//Write the blink program's instructions from RAM to the EEPROM. This can be skipped and the instructions can be manually flashed to the EEPROM through a programming tool.
+	//eepromWrite(0, 180, blink_program, crc);
+	
+	//Write a page in the application flash section. Data from the EEPROM is loaded within the function itself.
+	for(uint32_t page = PAGE_START_ADDRESS; page <= (PAGE_SIZE_BYTES * 2); page += PAGE_SIZE_BYTES){
+    7146:	80 e8       	ldi	r24, 0x80	; 128
+    7148:	c8 0e       	add	r12, r24
+    714a:	d1 1c       	adc	r13, r1
+    714c:	e1 1c       	adc	r14, r1
+    714e:	f1 1c       	adc	r15, r1
+    7150:	81 e0       	ldi	r24, 0x01	; 1
+    7152:	c8 16       	cp	r12, r24
+    7154:	d8 06       	cpc	r13, r24
+    7156:	e1 04       	cpc	r14, r1
+    7158:	f1 04       	cpc	r15, r1
+    715a:	90 f3       	brcs	.-28     	; 0x7140 <main+0x8>
+		writePage(page);		
+	}
+	
+	//Jump to the newly loaded program in the application flash section.
+	__asm__("jmp 0x0000");
+    715c:	0c 94 00 00 	jmp	0	; 0x0 <__TEXT_REGION_ORIGIN__>
+    7160:	ff cf       	rjmp	.-2      	; 0x7160 <main+0x28>
+
+00007162 <eepromReadByte>:
+    7162:	81 15       	cp	r24, r1
+    7164:	24 e0       	ldi	r18, 0x04	; 4
+    7166:	92 07       	cpc	r25, r18
+    7168:	c0 f4       	brcc	.+48     	; 0x719a <eepromReadByte+0x38>
+    716a:	f9 99       	sbic	0x1f, 1	; 31
+    716c:	fe cf       	rjmp	.-4      	; 0x716a <eepromReadByte+0x8>
+    716e:	1f ba       	out	0x1f, r1	; 31
+    7170:	f8 94       	cli
+    7172:	9c 01       	movw	r18, r24
+    7174:	08 2e       	mov	r0, r24
+    7176:	02 c0       	rjmp	.+4      	; 0x717c <eepromReadByte+0x1a>
+    7178:	36 95       	lsr	r19
+    717a:	27 95       	ror	r18
+    717c:	0a 94       	dec	r0
+    717e:	e2 f7       	brpl	.-8      	; 0x7178 <eepromReadByte+0x16>
+    7180:	22 bd       	out	0x22, r18	; 34
+    7182:	81 bd       	out	0x21, r24	; 33
+    7184:	8f b3       	in	r24, 0x1f	; 31
+    7186:	81 60       	ori	r24, 0x01	; 1
+    7188:	8f bb       	out	0x1f, r24	; 31
+    718a:	f8 99       	sbic	0x1f, 0	; 31
+    718c:	fe cf       	rjmp	.-4      	; 0x718a <eepromReadByte+0x28>
+    718e:	80 b5       	in	r24, 0x20	; 32
+    7190:	fb 01       	movw	r30, r22
+    7192:	80 83       	st	Z, r24
+    7194:	78 94       	sei
+    7196:	81 e0       	ldi	r24, 0x01	; 1
+    7198:	08 95       	ret
+    719a:	83 e0       	ldi	r24, 0x03	; 3
+    719c:	08 95       	ret
+
+0000719e <_exit>:
+    719e:	f8 94       	cli
+
+000071a0 <__stop_program>:
+    71a0:	ff cf       	rjmp	.-2      	; 0x71a0 <__stop_program>

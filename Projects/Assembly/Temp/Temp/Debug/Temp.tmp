@@ -1,0 +1,31 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.7</VERSION>
+ <DEVICE>"ATmega328P"</DEVICE>
+ <WORKING_DIR>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Temp\Temp\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\avrasm\inc</DIR>
+  <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Temp\Temp\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\avrasm\inc\m328pdef.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Temp\Temp\Debug\Temp.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>Temp.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>Temp.map</FILE>
+  <FILE>Temp.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <setup><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Temp\Temp\main.asm</FILE><LINE>30</LINE></setup>
+  <led_on><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Temp\Temp\main.asm</FILE><LINE>39</LINE></led_on>
+  <led_delay_loop_inner><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Temp\Temp\main.asm</FILE><LINE>42</LINE></led_delay_loop_inner>
+  <led_delay_loop_outer><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Temp\Temp\main.asm</FILE><LINE>46</LINE></led_delay_loop_outer>
+  <led_off><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Temp\Temp\main.asm</FILE><LINE>52</LINE></led_off>
+ </LABELS>
+</ASSEMBLER_INFO>

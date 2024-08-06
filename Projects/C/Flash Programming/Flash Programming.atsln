@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Atmel Studio Solution File, Format Version 11.00
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "Progmem", "Progmem\Progmem.cproj", "{DCE6C7E3-EE26-4D79-826B-08594B9AD897}"
+EndProject
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "Flash Programming", "Flash Programming\Flash Programming.cproj", "{3A1CF09E-ED1F-4869-A018-3690D9816ED1}"
+EndProject
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "EEPROM to Flash", "EEPROM to Flash\EEPROM to Flash.cproj", "{5F26A8E7-77D1-4DF6-AED1-7B595C445A8C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DCE6C7E3-EE26-4D79-826B-08594B9AD897}.Debug|AVR.ActiveCfg = Debug|AVR
+		{DCE6C7E3-EE26-4D79-826B-08594B9AD897}.Debug|AVR.Build.0 = Debug|AVR
+		{DCE6C7E3-EE26-4D79-826B-08594B9AD897}.Release|AVR.ActiveCfg = Release|AVR
+		{DCE6C7E3-EE26-4D79-826B-08594B9AD897}.Release|AVR.Build.0 = Release|AVR
+		{3A1CF09E-ED1F-4869-A018-3690D9816ED1}.Debug|AVR.ActiveCfg = Debug|AVR
+		{3A1CF09E-ED1F-4869-A018-3690D9816ED1}.Debug|AVR.Build.0 = Debug|AVR
+		{3A1CF09E-ED1F-4869-A018-3690D9816ED1}.Release|AVR.ActiveCfg = Release|AVR
+		{3A1CF09E-ED1F-4869-A018-3690D9816ED1}.Release|AVR.Build.0 = Release|AVR
+		{5F26A8E7-77D1-4DF6-AED1-7B595C445A8C}.Debug|AVR.ActiveCfg = Debug|AVR
+		{5F26A8E7-77D1-4DF6-AED1-7B595C445A8C}.Debug|AVR.Build.0 = Debug|AVR
+		{5F26A8E7-77D1-4DF6-AED1-7B595C445A8C}.Release|AVR.ActiveCfg = Release|AVR
+		{5F26A8E7-77D1-4DF6-AED1-7B595C445A8C}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

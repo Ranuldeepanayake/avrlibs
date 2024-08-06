@@ -1,0 +1,38 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.7</VERSION>
+ <DEVICE>"ATmega328P"</DEVICE>
+ <WORKING_DIR>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Logical Operators\Logical Operators\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\avrasm\inc</DIR>
+  <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Logical Operators\Logical Operators\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\avrasm\inc\m328pdef.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Logical Operators\Logical Operators\Debug\Logical Operators.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>Logical Operators.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>Logical Operators.map</FILE>
+  <FILE>Logical Operators.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <setup><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Logical Operators\Logical Operators\main.asm</FILE><LINE>30</LINE></setup>
+  <loop><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Logical Operators\Logical Operators\main.asm</FILE><LINE>37</LINE></loop>
+  <test_3><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Logical Operators\Logical Operators\main.asm</FILE><LINE>107</LINE></test_3>
+  <andi_1><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Logical Operators\Logical Operators\main.asm</FILE><LINE>50</LINE></andi_1>
+  <and_1><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Logical Operators\Logical Operators\main.asm</FILE><LINE>57</LINE></and_1>
+  <ori_1><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Logical Operators\Logical Operators\main.asm</FILE><LINE>64</LINE></ori_1>
+  <or_1><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Logical Operators\Logical Operators\main.asm</FILE><LINE>71</LINE></or_1>
+  <eor_1><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Logical Operators\Logical Operators\main.asm</FILE><LINE>79</LINE></eor_1>
+  <lsr_1><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Logical Operators\Logical Operators\main.asm</FILE><LINE>85</LINE></lsr_1>
+  <lsl_1><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Logical Operators\Logical Operators\main.asm</FILE><LINE>90</LINE></lsl_1>
+  <test_1><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Logical Operators\Logical Operators\main.asm</FILE><LINE>95</LINE></test_1>
+  <test_2><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Logical Operators\Logical Operators\main.asm</FILE><LINE>101</LINE></test_2>
+ </LABELS>
+</ASSEMBLER_INFO>

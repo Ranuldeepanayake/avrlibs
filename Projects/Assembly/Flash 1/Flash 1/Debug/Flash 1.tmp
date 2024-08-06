@@ -1,0 +1,28 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.7</VERSION>
+ <DEVICE>"ATmega328P"</DEVICE>
+ <WORKING_DIR>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Flash 1\Flash 1\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\avrasm\inc</DIR>
+  <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Flash 1\Flash 1\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\avrasm\inc\m328pdef.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Flash 1\Flash 1\Debug\Flash 1.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>Flash 1.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>Flash 1.map</FILE>
+  <FILE>Flash 1.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <reset><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Flash 1\Flash 1\main.asm</FILE><LINE>30</LINE></reset>
+  <led_on><FILE>D:\ranul\Documents\Atmel Studio\7.0\Projects\Assembly\Flash 1\Flash 1\main.asm</FILE><LINE>39</LINE></led_on>
+ </LABELS>
+</ASSEMBLER_INFO>
