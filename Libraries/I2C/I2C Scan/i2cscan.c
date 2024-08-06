@@ -32,7 +32,7 @@ void i2cScan(){
 	for(uint8_t address = 0; address <= 127; address++){
 		//If a slave responds.
 		if((address != 0) && (i2cDelayedStart(address, I2C_WRITE) == SUCCESS)){
-			i2cScanDebugIntToHex(address << 1, temp);
+			i2cScanDebugIntToHex(address, temp); //Gives the I2C address, not the byte address.
 			uartPrint("[i2cscan][Device responded at address] : "); uartPrintLn(temp);
 			
 		}else if((address == 0) && (i2cDelayedStart(address, I2C_WRITE) == SUCCESS)){

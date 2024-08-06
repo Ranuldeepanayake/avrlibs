@@ -8,6 +8,7 @@
  * Uses interrupt based code for slave send and receive modes.
  * Master modes do not use a buffer.
  * The slave modes uses a single byte buffer.
+ * Uses a hangup protection timer to prevent infinite polling loops.
  */ 
 
 
@@ -20,36 +21,36 @@
 
 //CPU clock.
 #ifndef F_CPU
-#define F_CPU 16000000UL	
+	#define F_CPU 16000000UL	
 #endif
 
 //I2C clock default set to 100KHz (standard mode).
 #ifndef SCL_CLOCK
-#define SCL_CLOCK 100000UL //100KHz
-//#define SCL_CLOCK 400000UL //400KHz
+	#define SCL_CLOCK 100000UL //100KHz
+	//#define SCL_CLOCK 400000UL //400KHz
 #endif
 
 //Prescaler for the I2C clock.
 #ifndef I2C_PRESCALER
-#define I2C_PRESCALER 1	
+	#define I2C_PRESCALER 1	
 #endif
 
 //Default Address used in slave mode.
 #ifndef I2C_SLAVE_ADDRESS
-#define I2C_SLAVE_ADDRESS 0x05
+	#define I2C_SLAVE_ADDRESS 0x05
 #endif
 
-//Bus hangup detection timer clock cycles (number of I2C clock cycles).
-#ifndef BUS_HANGUP_TIMEOUT_CYCLES
-#define BUS_HANGUP_TIMEOUT_CYCLES 60
-#endif
-
+//Bus hangup protection switch.
 #define BUS_HANGUP_PROTECTION_ENABLED
+
+//Bus hangup detection timer clock cycles (number of bytes on the I2C bus).
+#ifndef BUS_HANGUP_TIMEOUT_CYCLES
+	#define BUS_HANGUP_TIMEOUT_CYCLES 8
+#endif
 
 //Bus hangup detection timer.
 #ifndef BUS_HANGUP_TIMEOUT
-#define BUS_HANGUP_TIMEOUT 640 //Directly in microseconds. Value obtained after noticing that one I2C clock with the BMP280 spanned 40 microseconds (40 x 16 cycles).
-//#define BUS_HANGUP_TIMEOUT (((1 / (SCL_CLOCK/1000)) * 1000) * BUS_HANGUP_TIMEOUT_CYCLES) //This macro did not perform proper math??
+	#define BUS_HANGUP_TIMEOUT (((F_CPU / SCL_CLOCK) * 8) * BUS_HANGUP_TIMEOUT_CYCLES) //This macro did not perform proper math??
 #endif
 
 #define TWGCI 0x01

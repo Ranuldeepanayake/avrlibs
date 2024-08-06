@@ -12,7 +12,6 @@
 
 #include <avr/interrupt.h> //For the I2C interrupt vector.
 #include "i2c.h"
-#include "timer.h"
 
 //Slave data receive buffer.
 volatile uint8_t slave_write_data_received_buffer = 0;
@@ -24,8 +23,8 @@ volatile uint8_t slave_data_to_be_sent_buffer = 0;
 //Slave data sent flag.
 volatile bool slave_sent_new_read_data = false;
 
-//Timer variables.
-volatile uint16_t hangup_timer_current_time = 0, hangup_timer_previous_time = 0;
+//Bus hangup protection counter.
+volatile uint16_t _hangup_timer = 0;
 
 /*
 I2C receive ISR. This ISR is entered when the I2C bus receives a byte from a master or slave. This ISR is currently used only for the two slave modes.
@@ -61,11 +60,6 @@ void i2cSetMaster(uint8_t prescaler, uint8_t baud_rate){
 	TWSR= prescaler; //Two wire status register.	////////////////////////////////////////Currently set to 100KHz.
 	TWBR= baud_rate; //((F_CPU/SCL_CLOCK)-16)/2;	//Set I2C bit rate for SCL generation in master modes.
 	TWCR= (1<< TWEN); //Enable the I2C interface.
-	
-	//Enable the microsecond timer for bus hangup detection.
-	#ifdef BUS_HANGUP_PROTECTION_ENABLED
-	timerSetMicros();
-	#endif
 }
 
 /*
@@ -137,17 +131,13 @@ Returns a result code.
 uint8_t i2cReadByte(){
 	TWCR= ((1<< TWINT) | (1<< TWEN) | (1<< TWEA));	//Enable ACK. Sends ACK to sender after receiving data.
 	
-	#ifdef BUS_HANGUP_PROTECTION_ENABLED
-	hangup_timer_previous_time = timerGetMicros();
-	#endif
-	
 	while(!(TWCR & (1<< TWINT))){
-		
 		#ifdef BUS_HANGUP_PROTECTION_ENABLED
-		hangup_timer_current_time = timerGetMicros();
-		if((hangup_timer_current_time - hangup_timer_previous_time) >= BUS_HANGUP_TIMEOUT){
-			break;
-		}
+			_hangup_timer++;
+			if(_hangup_timer >= BUS_HANGUP_TIMEOUT){
+				_hangup_timer = 0;	//Zero out the timer when exiting.
+				break;
+			}
 		#endif
 	}
 	
@@ -166,17 +156,13 @@ Returns a result code.
 uint8_t i2cReadLastByte(){
 	TWCR= ((1<< TWINT) | (1<< TWEN));	//Disable ACK. Creates a NACK condition which signals the slave to stop sending data.
 	
-	#ifdef BUS_HANGUP_PROTECTION_ENABLED
-	hangup_timer_previous_time = timerGetMicros();
-	#endif
-	
 	while(!(TWCR & (1<< TWINT))){
-		
 		#ifdef BUS_HANGUP_PROTECTION_ENABLED
-		hangup_timer_current_time = timerGetMicros();
-		if((hangup_timer_current_time - hangup_timer_previous_time) >= BUS_HANGUP_TIMEOUT){
-			break;
-		}
+			_hangup_timer++;
+			if(_hangup_timer >= BUS_HANGUP_TIMEOUT){
+				_hangup_timer = 0;	//Zero out the timer when exiting.
+				break;
+			}
 		#endif
 	}
 	
@@ -191,18 +177,14 @@ Generates a stop condition on the I2C bus.
 */
 void i2cStop(){
 	TWCR= ((1<< TWINT) | (1<< TWSTO) | (1<< TWEN));	//Set the stop bit.
-	
-	#ifdef BUS_HANGUP_PROTECTION_ENABLED
-	hangup_timer_previous_time = timerGetMicros();
-	#endif
-	
+
 	while(TWCR & (1<< TWSTO)){	//Wait for TWSTO to be cleared automatically.
-		
 		#ifdef BUS_HANGUP_PROTECTION_ENABLED
-		hangup_timer_current_time = timerGetMicros();
-		if((hangup_timer_current_time - hangup_timer_previous_time) >= BUS_HANGUP_TIMEOUT){
-			break;
-		}
+			_hangup_timer++;
+			if(_hangup_timer >= BUS_HANGUP_TIMEOUT){
+				_hangup_timer = 0;	//Zero out the timer when exiting.
+				break;
+			}
 		#endif
 	}	
 }
@@ -261,18 +243,13 @@ void i2cStart(){
 	//Send start signal on the I2C bus.
 	TWCR= ((1<< TWINT) | (1<< TWSTA) | (1<< TWEN)); //Clear TWINT to execute start signal.
 	
-	//Wait for the flag with a hang up detection timer for safety.
-	#ifdef BUS_HANGUP_PROTECTION_ENABLED
-	hangup_timer_previous_time = timerGetMicros();
-	#endif
-	
 	while(!(TWCR & (1<< TWINT))){	//Wait for TWINT to become zero (wait for pending operations to finish).
-		
 		#ifdef BUS_HANGUP_PROTECTION_ENABLED
-		hangup_timer_current_time = timerGetMicros();
-		if((hangup_timer_current_time - hangup_timer_previous_time) >= BUS_HANGUP_TIMEOUT){
-			break;
-		}
+			_hangup_timer++;
+			if(_hangup_timer >= BUS_HANGUP_TIMEOUT){
+				_hangup_timer = 0;	//Zero out the timer when exiting.
+				break;
+			}
 		#endif
 	}	
 }
@@ -286,18 +263,13 @@ void i2cWriteByte(uint8_t data){
 	TWDR= data;
 	TWCR= ((1<< TWINT) | (1<< TWEN));	//Clear TWINT to shift data out the I2C bus.
 	
-	//Wait for the flag with a hang up detection timer for safety.
-	#ifdef BUS_HANGUP_PROTECTION_ENABLED
-	hangup_timer_previous_time = timerGetMicros();
-	#endif
-	
 	while(!(TWCR & (1<< TWINT))){
-		
 		#ifdef BUS_HANGUP_PROTECTION_ENABLED
-		hangup_timer_current_time = timerGetMicros();
-		if((hangup_timer_current_time - hangup_timer_previous_time) >= BUS_HANGUP_TIMEOUT){
-			break;
-		}
+			_hangup_timer++;
+			if(_hangup_timer >= BUS_HANGUP_TIMEOUT){
+				_hangup_timer = 0;  //Zero out the timer when exiting.
+				break;
+			}
 		#endif
 	}
 }
