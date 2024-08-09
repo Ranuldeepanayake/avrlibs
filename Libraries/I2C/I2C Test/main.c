@@ -14,7 +14,7 @@
 int main(void)
 {
 	uartSet(UART_BAUD_RATE(9600), UART_DATA_SIZE_8, UART_PARITY_NONE, UART_STOP_BITS_1);
-	i2cSetMaster(I2C_PRESCALER, I2C_BAUD_RATE);
+	i2cSetMaster(I2C_PRESCALER, I2C_BAUD_RATE(SCL_CLOCK_400K));
 	uartPrintLn("Init>");
 	i2cScan();
 	

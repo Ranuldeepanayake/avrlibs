@@ -20,9 +20,15 @@ void testCounter();
 
 int main(void)
 {
-	i2cSetMaster(I2C_PRESCALER, I2C_BAUD_RATE);
+	i2cSetMaster(I2C_PRESCALER, I2C_BAUD_RATE(SCL_CLOCK_100K));
 	ssd1306Initialize();
 	testHelloWorld();
+	//testCorners();
+	
+	//ssd1306TestFont();
+	//ssd1306TransferBuffer();
+	
+	//ssd1306TestSplash();
 	
     while (1) 
     {

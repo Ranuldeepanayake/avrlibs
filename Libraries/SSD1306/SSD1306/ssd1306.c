@@ -3,7 +3,7 @@
  *
  * Created: 22-Dec-18 11:55:55 AM
  * Author: Ranul Deepanayake
- * 128* 64 bits, divided into 8 pages ((16 bytes* 8 bytes)/8). 1 page= 16 bytes (128 bits).  
+ * 128* 64 bits, divided into 8 pages. 1024 pages? ((16 bytes* 8 bytes)/8). 1 page= 16 bytes (128 bits).  
  */ 
 
 #include "ssd1306.h"
@@ -63,7 +63,7 @@ void ssd1306Initialize(){
 	i2cDelayedStart(SSD1306_SLAVE_ADDRESS, I2C_WRITE);
 	i2cWrite(SSD1306_CONTROL_BYTE_COMMAND_STREAM);
 	for(uint8_t i= 0; i< 24; i++){
-		i2cWrite(pgm_read_byte(&(ssd1306_initialization_values[i])));	//Read the array of values stored in flash.
+		i2cWrite(pgm_read_byte(&ssd1306_initialization_values[i]));	//Read the array of values stored in flash.
 	}
 	i2cStop();	
 }
@@ -188,7 +188,7 @@ void ssd1306TestFont(){
 	
 	for(uint8_t character= 32; character< 127; character++){
 		for(uint8_t page= 0; page< 6; page++){
-			ssd1306_gddram_buffer[buffer_pointer] = pgm_read_byte(&(ssd1306_font[character][page]));
+			ssd1306_gddram_buffer[buffer_pointer] = pgm_read_byte(&ssd1306_font[character][page]);
 			buffer_pointer++;
 		}
 			characters_per_line++;
@@ -197,6 +197,20 @@ void ssd1306TestFont(){
 				characters_per_line= 0;
 			}
 	}
+}
+
+void ssd1306TestSplash(){
+	/*
+	Tests the font collection stored in flash memory.
+	Uses the local frame buffer.
+	*/
+	#ifdef SSD1306_GDDRAM_TEST_BUFFER_SET
+		ssd1306ClearDisplay();
+		for(uint16_t i = 0; i < SSD1306_GDDRAM_SIZE; i++){
+			ssd1306_gddram_buffer[i]= pgm_read_byte(&_ssd1306_gddram_splash_test[i]);		//Zero fill the local frame buffer.
+		}
+		ssd1306TransferBuffer();
+	#endif
 }
 
 uint8_t ssd1306Print(char *string, uint8_t x, uint8_t y){

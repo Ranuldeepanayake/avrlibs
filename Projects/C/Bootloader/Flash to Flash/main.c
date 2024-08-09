@@ -11,7 +11,11 @@
 #include <avr/io.h>
 #include <avr/boot.h>
 #include <avr/interrupt.h>
-#include "eeprom.h"
+#include <avr/pgmspace.h>
+#include <string.h>
+#include <stdlib.h>
+#include <util/delay.h>
+#include "uart.h"
 
 /*
 Page size: 64 words/128 bytes
@@ -34,7 +38,7 @@ void writePage(uint16_t page_start_address);
 The blink program instructions.
 90 words/180 bytes/1.4 pages
 */
-char blink_program[] = {
+PROGMEM const uint8_t blink_program[180] = {
 	0x0C, 0x94, 0x34, 0x00, 0x0C, 0x94, 0x3E, 0x00, 0x0C, 0x94, 0x3E, 0x00, 0x0C, 0x94, 0x3E, 0x00,
 	0x0C, 0x94, 0x3E, 0x00, 0x0C, 0x94, 0x3E, 0x00, 0x0C, 0x94, 0x3E, 0x00, 0x0C, 0x94, 0x3E, 0x00,
 	0x0C, 0x94, 0x3E, 0x00, 0x0C, 0x94, 0x3E, 0x00, 0x0C, 0x94, 0x3E, 0x00, 0x0C, 0x94, 0x3E, 0x00,
@@ -47,14 +51,28 @@ char blink_program[] = {
 	0xE1, 0xF7, 0x00, 0xC0, 0x00, 0x00, 0x85, 0xB1, 0x89, 0x27, 0x85, 0xB9, 0x2F, 0xEF, 0x39, 0xE6,
 	0x88, 0xE1, 0x21, 0x50, 0x30, 0x40, 0x80, 0x40, 0xE1, 0xF7, 0x00, 0xC0, 0x00, 0x00, 0xEA, 0xCF,
 	0xF8, 0x94, 0xFF, 0xCF
-}; 
+};
 
+uint8_t cache[180];
+char temp[10];
+uint16_t flash_address = 0;
 
 int main(void)
 {		
-	//uint16_t *crc = 0;
-	//Write the blink program's instructions from RAM to the EEPROM. This can be skipped and the instructions can be manually flashed to the EEPROM through a programming tool.
-	//eepromWrite(0, 180, blink_program, crc);
+	//uartSet(UART_BAUD_RATE(115200), UART_DATA_SIZE_8, UART_PARITY_NONE, UART_STOP_BITS_1);
+	//uartPrintLn("Init>");
+	
+	//Write the blink program's instructions from FLASH to the RAM temporarily.
+	//memset(cache, 0, 180);
+	for(uint16_t byte = 0; byte < 180; byte++){
+		
+		//uartPrintLn("Reading byte");
+		cache[byte] = pgm_read_byte_near(&blink_program[byte]);
+		itoa(cache[byte], temp, 16);
+		//uartPrint(temp); uartPrint(" ");
+		//memset(temp, 0, 10);
+		//_delay_ms(10);
+	}
 	
 	//Write a page in the application flash section. Data from the EEPROM is loaded within the function itself.
 	for(uint32_t page = PAGE_START_ADDRESS; page <= (PAGE_SIZE_BYTES * 2); page += PAGE_SIZE_BYTES){
@@ -71,10 +89,7 @@ int main(void)
 }
 
 void writePage(uint16_t page_start_address){
-	char *eeprom_data = 0;
-	uint8_t eeprom_address = page_start_address;
 	uint16_t data_temp = 0;
-	
 	
 	cli();									//Disable interrupts.
 	boot_page_erase(page_start_address);	//Erase the page to be written (byte address of the page start).
@@ -82,14 +97,12 @@ void writePage(uint16_t page_start_address){
 	
 	//Fill the page write buffer with bytes, not words.
 	for(uint8_t i = 0; i < PAGE_SIZE_WORDS; i += 2){		//Increment two addresses since data is written byte-wise even though addressing is done word-wise (??).
-		
-		eepromReadByte(eeprom_address, eeprom_data);		
-		data_temp = *eeprom_data;							//Convert to little endian when passing to boot_page_fill(). LSB first and MSB second.
-		eeprom_address++;									//Increment the EEEPROM address to read the MSB.	
-		
-		eepromReadByte(eeprom_address, eeprom_data);		
-		data_temp |= (*eeprom_data << 8);					//Convert to little endian when passing to boot_page_fill(). LSB first and MSB second.
-		eeprom_address++;									//Increment the EEEPROM address to read the next cycle's LSB.
+			
+		data_temp = cache[flash_address];							//Convert to little endian when passing to boot_page_fill(). LSB first and MSB second.
+		flash_address++;									//Increment the EEEPROM address to read the MSB.	
+			
+		data_temp |= ((cache[flash_address]) << 8);					//Convert to little endian when passing to boot_page_fill(). LSB first and MSB second.
+		flash_address++;									//Increment the EEEPROM address to read the next cycle's LSB.
 		
 		boot_page_fill(page_start_address + i, data_temp); //LS byte address of a word address and a data word.
 		

@@ -13,6 +13,7 @@
 #include <avr/pgmspace.h>
 #include <util/delay.h>
 #include <string.h>
+#include <stdlib.h>
 #include "uart.h"
 
 //https://www.arduino.cc/reference/en/language/variables/utilities/progmem/
@@ -36,12 +37,14 @@ PROGMEM const char *const string_table[] = {string_1, string_2, string_3};
 
 //Experimental.	
 PROGMEM const char string_array[3][10] = {"XDD", "YDD", "ZDD"};
-PROGMEM const char int_array[2][3] = {{0x11, 0x22, 0x23}, {0x11, 0x22, 0x23}, {0x11, 0x22, 0x23}};
+PROGMEM const char int_array_1[3][3] = {{0x11, 0x22, 0x23}, {0x11, 0x22, 0x23}, {0x11, 0x22, 0x23}};
+	
+PROGMEM const uint8_t int_array_2[6] = {0x62, 0x063, 0x64, 0x04, 0x05, 0x06};
 
 int main(void)
 {
-	uartSet(UART_BAUD_RATE(9600), 8, UART_PARITY_NONE, UART_STOP_BITS_1);
-	char my_char[50];
+	uartSet(UART_BAUD_RATE(9600), UART_DATA_SIZE_8, UART_PARITY_NONE, UART_STOP_BITS_1);
+	char my_char[10];
 	
     while (1) 
     {
@@ -67,5 +70,16 @@ int main(void)
 			//memset(my_char, 0, 50);
 		//}
 		
+		uint16_t address = &int_array_2;
+		uint8_t a = 0;
+		
+		for(uint8_t i = 0; i < sizeof(int_array_2); i++){
+			a = pgm_read_byte_near(address++);
+			itoa(a, my_char, 10);
+			uartPrintLn(my_char);
+			memset(my_char, 0, 10);
+			_delay_ms(100);
+		}
+	
     }
 }

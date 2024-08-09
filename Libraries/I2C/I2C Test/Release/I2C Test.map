@@ -46,9 +46,9 @@ Discarded input sections
  .text.i2cWrite
                 0x00000000       0x18 ../../I2C/Release\libI2C.a(i2c.o)
  .text.i2cReadByte
-                0x00000000       0x50 ../../I2C/Release\libI2C.a(i2c.o)
+                0x00000000       0x76 ../../I2C/Release\libI2C.a(i2c.o)
  .text.i2cReadLastByte
-                0x00000000       0x4c ../../I2C/Release\libI2C.a(i2c.o)
+                0x00000000       0x72 ../../I2C/Release\libI2C.a(i2c.o)
  .text.i2cMasterRecieveData
                 0x00000000       0x78 ../../I2C/Release\libI2C.a(i2c.o)
  .text.i2cMasterWriteData
@@ -268,7 +268,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x8a0
+.text           0x00000000      0x912
  *(.vectors)
  .vectors       0x00000000       0x68 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/2.2.509/gcc/dev/atmega328p/avr5/crtatmega328p.o
                 0x00000000                __vector_default
@@ -360,78 +360,78 @@ END GROUP
  .text.i2cSetMaster
                 0x00000176       0x10 ../../I2C/Release\libI2C.a(i2c.o)
                 0x00000176                i2cSetMaster
- .text.i2cStop  0x00000186       0x3c ../../I2C/Release\libI2C.a(i2c.o)
+ .text.i2cStop  0x00000186       0x62 ../../I2C/Release\libI2C.a(i2c.o)
                 0x00000186                i2cStop
  .text.i2cStart
-                0x000001c2       0x3c ../../I2C/Release\libI2C.a(i2c.o)
-                0x000001c2                i2cStart
+                0x000001e8       0x62 ../../I2C/Release\libI2C.a(i2c.o)
+                0x000001e8                i2cStart
  .text.i2cWriteByte
-                0x000001fe       0x40 ../../I2C/Release\libI2C.a(i2c.o)
-                0x000001fe                i2cWriteByte
+                0x0000024a       0x66 ../../I2C/Release\libI2C.a(i2c.o)
+                0x0000024a                i2cWriteByte
  .text.i2cGetStatus
-                0x0000023e        0x8 ../../I2C/Release\libI2C.a(i2c.o)
-                0x0000023e                i2cGetStatus
+                0x000002b0        0x8 ../../I2C/Release\libI2C.a(i2c.o)
+                0x000002b0                i2cGetStatus
  .text.i2cDelayedStart
-                0x00000246       0x76 ../../I2C/Release\libI2C.a(i2c.o)
-                0x00000246                i2cDelayedStart
- .text.uartSet  0x000002bc       0x82 ../../../UART/UART/Release\libUART.a(uart.o)
-                0x000002bc                uartSet
+                0x000002b8       0x76 ../../I2C/Release\libI2C.a(i2c.o)
+                0x000002b8                i2cDelayedStart
+ .text.uartSet  0x0000032e       0x82 ../../../UART/UART/Release\libUART.a(uart.o)
+                0x0000032e                uartSet
  .text.uartBufferPush
-                0x0000033e       0x94 ../../../UART/UART/Release\libUART.a(uart.o)
-                0x0000033e                uartBufferPush
+                0x000003b0       0x94 ../../../UART/UART/Release\libUART.a(uart.o)
+                0x000003b0                uartBufferPush
  .text.uartBufferPop
-                0x000003d2       0x98 ../../../UART/UART/Release\libUART.a(uart.o)
-                0x000003d2                uartBufferPop
+                0x00000444       0x98 ../../../UART/UART/Release\libUART.a(uart.o)
+                0x00000444                uartBufferPop
  .text.uartAvailable
-                0x0000046a       0x24 ../../../UART/UART/Release\libUART.a(uart.o)
-                0x0000046a                uartAvailable
+                0x000004dc       0x24 ../../../UART/UART/Release\libUART.a(uart.o)
+                0x000004dc                uartAvailable
  .text.__vector_19
-                0x0000048e       0xaa ../../../UART/UART/Release\libUART.a(uart.o)
-                0x0000048e                __vector_19
+                0x00000500       0xaa ../../../UART/UART/Release\libUART.a(uart.o)
+                0x00000500                __vector_19
  .text.uartIsFull
-                0x00000538       0x2c ../../../UART/UART/Release\libUART.a(uart.o)
-                0x00000538                uartIsFull
+                0x000005aa       0x2c ../../../UART/UART/Release\libUART.a(uart.o)
+                0x000005aa                uartIsFull
  .text.uartPrint
-                0x00000564       0x42 ../../../UART/UART/Release\libUART.a(uart.o)
-                0x00000564                uartPrint
+                0x000005d6       0x42 ../../../UART/UART/Release\libUART.a(uart.o)
+                0x000005d6                uartPrint
  .text.uartPrintLn
-                0x000005a6       0x66 ../../../UART/UART/Release\libUART.a(uart.o)
-                0x000005a6                uartPrintLn
+                0x00000618       0x66 ../../../UART/UART/Release\libUART.a(uart.o)
+                0x00000618                uartPrintLn
  .text.uartFrameError
-                0x0000060c        0xe ../../../UART/UART/Release\libUART.a(uart.o)
-                0x0000060c                uartFrameError
+                0x0000067e        0xe ../../../UART/UART/Release\libUART.a(uart.o)
+                0x0000067e                uartFrameError
  .text.uartOverrunError
-                0x0000061a        0xe ../../../UART/UART/Release\libUART.a(uart.o)
-                0x0000061a                uartOverrunError
+                0x0000068c        0xe ../../../UART/UART/Release\libUART.a(uart.o)
+                0x0000068c                uartOverrunError
  .text.uartParityError
-                0x00000628        0xe ../../../UART/UART/Release\libUART.a(uart.o)
-                0x00000628                uartParityError
+                0x0000069a        0xe ../../../UART/UART/Release\libUART.a(uart.o)
+                0x0000069a                uartParityError
  .text.__vector_18
-                0x00000636       0xba ../../../UART/UART/Release\libUART.a(uart.o)
-                0x00000636                __vector_18
+                0x000006a8       0xba ../../../UART/UART/Release\libUART.a(uart.o)
+                0x000006a8                __vector_18
  .text.i2cScanDebugIntToHex
-                0x000006f0       0xa0 ../../I2C Scan/Release\libI2CSCAN.a(i2cscan.o)
-                0x000006f0                i2cScanDebugIntToHex
- .text.i2cScan  0x00000790       0x8c ../../I2C Scan/Release\libI2CSCAN.a(i2cscan.o)
-                0x00000790                i2cScan
+                0x00000762       0xa0 ../../I2C Scan/Release\libI2CSCAN.a(i2cscan.o)
+                0x00000762                i2cScanDebugIntToHex
+ .text.i2cScan  0x00000802       0x8c ../../I2C Scan/Release\libI2CSCAN.a(i2cscan.o)
+                0x00000802                i2cScan
  .text.avr-libc
-                0x0000081c       0x16 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strcat.o)
-                0x0000081c                strcat
+                0x0000088e       0x16 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strcat.o)
+                0x0000088e                strcat
  .text.avr-libc
-                0x00000832       0x16 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(itoa_ncheck.o)
-                0x00000832                __itoa_ncheck
+                0x000008a4       0x16 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(itoa_ncheck.o)
+                0x000008a4                __itoa_ncheck
  .text.avr-libc
-                0x00000848       0x34 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(utoa_ncheck.o)
-                0x00000848                __utoa_ncheck
-                0x0000084a                __utoa_common
+                0x000008ba       0x34 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(utoa_ncheck.o)
+                0x000008ba                __utoa_ncheck
+                0x000008bc                __utoa_common
  .text.avr-libc
-                0x0000087c       0x20 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strrev.o)
-                0x0000087c                strrev
-                0x0000089c                . = ALIGN (0x2)
+                0x000008ee       0x20 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strrev.o)
+                0x000008ee                strrev
+                0x0000090e                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x0000089c        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
-                0x0000089c                _exit
-                0x0000089c                exit
+ .fini9         0x0000090e        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+                0x0000090e                _exit
+                0x0000090e                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -450,11 +450,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x0000089c        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+ .fini0         0x0000090e        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x000008a0                _etext = .
+                0x00000912                _etext = .
 
-.data           0x00800100      0x156 load address 0x000008a0
+.data           0x00800100      0x156 load address 0x00000912
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -477,47 +477,47 @@ END GROUP
                 0x00800256                _edata = .
                 0x00800256                PROVIDE (__data_end, .)
 
-.bss            0x00800256        0xa
+.bss            0x00800256        0xc
                 0x00800256                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
  .bss._hangup_timer
-                0x00800256        0x2 ../../I2C/Release\libI2C.a(i2c.o)
+                0x00800256        0x4 ../../I2C/Release\libI2C.a(i2c.o)
                 0x00800256                _hangup_timer
  .bss.slave_sent_new_read_data
-                0x00800258        0x1 ../../I2C/Release\libI2C.a(i2c.o)
-                0x00800258                slave_sent_new_read_data
- .bss.slave_data_to_be_sent_buffer
-                0x00800259        0x1 ../../I2C/Release\libI2C.a(i2c.o)
-                0x00800259                slave_data_to_be_sent_buffer
- .bss.slave_received_new_write_data
                 0x0080025a        0x1 ../../I2C/Release\libI2C.a(i2c.o)
-                0x0080025a                slave_received_new_write_data
- .bss.slave_write_data_received_buffer
+                0x0080025a                slave_sent_new_read_data
+ .bss.slave_data_to_be_sent_buffer
                 0x0080025b        0x1 ../../I2C/Release\libI2C.a(i2c.o)
-                0x0080025b                slave_write_data_received_buffer
+                0x0080025b                slave_data_to_be_sent_buffer
+ .bss.slave_received_new_write_data
+                0x0080025c        0x1 ../../I2C/Release\libI2C.a(i2c.o)
+                0x0080025c                slave_received_new_write_data
+ .bss.slave_write_data_received_buffer
+                0x0080025d        0x1 ../../I2C/Release\libI2C.a(i2c.o)
+                0x0080025d                slave_write_data_received_buffer
  .bss.usart_led_toggle
-                0x0080025c        0x1 ../../../UART/UART/Release\libUART.a(uart.o)
-                0x0080025c                usart_led_toggle
- .bss._rx_parity_errors
-                0x0080025d        0x1 ../../../UART/UART/Release\libUART.a(uart.o)
-                0x0080025d                _rx_parity_errors
- .bss._rx_overrun_errors
                 0x0080025e        0x1 ../../../UART/UART/Release\libUART.a(uart.o)
-                0x0080025e                _rx_overrun_errors
- .bss._rx_frame_errors
+                0x0080025e                usart_led_toggle
+ .bss._rx_parity_errors
                 0x0080025f        0x1 ../../../UART/UART/Release\libUART.a(uart.o)
-                0x0080025f                _rx_frame_errors
+                0x0080025f                _rx_parity_errors
+ .bss._rx_overrun_errors
+                0x00800260        0x1 ../../../UART/UART/Release\libUART.a(uart.o)
+                0x00800260                _rx_overrun_errors
+ .bss._rx_frame_errors
+                0x00800261        0x1 ../../../UART/UART/Release\libUART.a(uart.o)
+                0x00800261                _rx_frame_errors
  *(COMMON)
-                0x00800260                PROVIDE (__bss_end, .)
-                0x000008a0                __data_load_start = LOADADDR (.data)
-                0x000009f6                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x00800262                PROVIDE (__bss_end, .)
+                0x00000912                __data_load_start = LOADADDR (.data)
+                0x00000a68                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00800260        0x0
+.noinit         0x00800262        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x00800260                _end = .
+                0x00800262                _end = .
                 [!provide]                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
@@ -593,10 +593,10 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000      0x710
+.debug_info     0x00000000      0x70f
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x5f4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/2.2.509/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_info    0x000005f4      0x11c main.o
+ .debug_info    0x000005f4      0x11b main.o
 
 .debug_abbrev   0x00000000      0x623
  *(.debug_abbrev)

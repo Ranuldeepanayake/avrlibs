@@ -37,7 +37,6 @@ SUBDIRS :=
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
-../main.c \
 ../ssd1306.c \
 ../ssd1306Fonts.c \
 ../ssd1306FlashStore.c \
@@ -51,28 +50,24 @@ ASM_SRCS +=
 
 
 OBJS +=  \
-main.o \
 ssd1306.o \
 ssd1306Fonts.o \
 ssd1306FlashStore.o \
 stringfunctions.o
 
 OBJS_AS_ARGS +=  \
-main.o \
 ssd1306.o \
 ssd1306Fonts.o \
 ssd1306FlashStore.o \
 stringfunctions.o
 
 C_DEPS +=  \
-main.d \
 ssd1306.d \
 ssd1306Fonts.d \
 ssd1306FlashStore.d \
 stringfunctions.d
 
 C_DEPS_AS_ARGS +=  \
-main.d \
 ssd1306.d \
 ssd1306Fonts.d \
 ssd1306FlashStore.d \
@@ -92,13 +87,6 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
-./main.o: .././main.c
-	@echo Building file: $<
-	@echo Invoking: AVR/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DNDEBUG -DF_CPU=16000000UL  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\Atmel\ATmega_DFP\2.2.509\include" -I"../../../I2C/I2C"  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -Wall -mmcu=atmega328p -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\Atmel\ATmega_DFP\2.2.509\gcc\dev\atmega328p" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
-	@echo Finished building: $<
-	
-
 ./ssd1306.o: .././ssd1306.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0

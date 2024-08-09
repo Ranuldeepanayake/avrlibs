@@ -24,11 +24,9 @@
 	#define F_CPU 16000000UL	
 #endif
 
-//I2C clock default set to 100KHz (standard mode).
-#ifndef SCL_CLOCK
-	#define SCL_CLOCK 100000UL //100KHz
-	//#define SCL_CLOCK 400000UL //400KHz
-#endif
+//I2C clock (standard mode).
+#define SCL_CLOCK_100K 100000UL //100KHz
+#define SCL_CLOCK_400K 400000UL //400KHz
 
 //Prescaler for the I2C clock.
 #ifndef I2C_PRESCALER
@@ -45,18 +43,18 @@
 
 //Bus hangup detection timer clock cycles (number of bytes on the I2C bus).
 #ifndef BUS_HANGUP_TIMEOUT_CYCLES
-	#define BUS_HANGUP_TIMEOUT_CYCLES 8
+	#define BUS_HANGUP_TIMEOUT_CYCLES 1024 //Tested with an SSD1306 display. Values below 256 did not yield stable results.
 #endif
 
 //Bus hangup detection timer.
 #ifndef BUS_HANGUP_TIMEOUT
-	#define BUS_HANGUP_TIMEOUT (((F_CPU / SCL_CLOCK) * 8) * BUS_HANGUP_TIMEOUT_CYCLES) //This macro did not perform proper math??
+	#define BUS_HANGUP_TIMEOUT (((F_CPU / SCL_CLOCK_100K) * 8) * BUS_HANGUP_TIMEOUT_CYCLES)
 #endif
 
 #define TWGCI 0x01
 
 //Baud rate calculation.
-#define I2C_BAUD_RATE ((F_CPU/SCL_CLOCK)-16)/(2* I2C_PRESCALER)
+#define I2C_BAUD_RATE(SCL_CLOCK) ((F_CPU/SCL_CLOCK) - 16) / (2 * I2C_PRESCALER)
 
 //Master status codes.
 
@@ -129,7 +127,7 @@ Example implementation.
 
 int main(void)
 {
-	i2cSetMaster(I2C_PRESCALER, I2C_BAUD_RATE);
+	i2cSetMaster(I2C_PRESCALER, I2C_BAUD_RATE(SCL_CLOCK_400K));
 	
 	while (1)
 	{

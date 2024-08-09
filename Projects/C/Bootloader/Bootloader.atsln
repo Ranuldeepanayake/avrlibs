@@ -5,9 +5,9 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "Bootloader", "Bootloader\Bootloader.cproj", "{DCE6C7E3-EE26-4D79-826B-08594B9AD897}"
 EndProject
-Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "EEPROM to Flash", "..\Flash Programming\EEPROM to Flash\EEPROM to Flash.cproj", "{5F26A8E7-77D1-4DF6-AED1-7B595C445A8C}"
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "EEPROM to Flash", "EEPROM to Flash\EEPROM to Flash.cproj", "{5F26A8E7-77D1-4DF6-AED1-7B595C445A8C}"
 EndProject
-Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "Flash Programming", "..\Flash Programming\Flash Programming\Flash Programming.cproj", "{3A1CF09E-ED1F-4869-A018-3690D9816ED1}"
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "Flash to Flash", "Flash to Flash\Flash to Flash.cproj", "{3A1CF09E-ED1F-4869-A018-3690D9816ED1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

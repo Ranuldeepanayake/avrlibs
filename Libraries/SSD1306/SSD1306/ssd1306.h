@@ -67,6 +67,7 @@ void ssd1306ClearDisplay();
 void ssd1306TransferBuffer();
 //Tests the font collection stored in flash memory.
 void ssd1306TestFont();
+void ssd1306TestSplash();
 //Sends an array of characters to the local display buffer starting from the specified X and Y pixel coordinates.
 uint8_t ssd1306Print(char *string, uint8_t x, uint8_t y);
 //Fill the local frame buffer with th specified byte pattern.
@@ -75,10 +76,10 @@ void ssd1306FillBuffer(uint8_t pattern);
 void ssd1306SetContrast(uint8_t contrast);
 
 //External variables and constants.
-extern const uint8_t ssd1306_initialization_values[24] PROGMEM;
-extern const char ssd1306_font[128][6] PROGMEM;
+extern PROGMEM const uint8_t ssd1306_initialization_values[24];
+extern PROGMEM const char ssd1306_font[128][6];
 #ifdef SSD1306_GDDRAM_TEST_BUFFER_SET
-extern const uint8_t ssd1306_gddram_test[1024] PROGMEM; 
+	extern PROGMEM const uint8_t _ssd1306_gddram_splash_test[1024] ; 
 #endif
 
 #endif /* SSD1306_H_ */

@@ -5,13 +5,11 @@ Archive member included to satisfy reference by file (symbol)
 ../../SSD1306/Release\libSSD1306.a(ssd1306Fonts.o)
                               ../../SSD1306/Release\libSSD1306.a(ssd1306.o) (ssd1306_font)
 ../../SSD1306/Release\libSSD1306.a(ssd1306FlashStore.o)
-                              ../../SSD1306/Release\libSSD1306.a(ssd1306.o) (ssd1306_initialization_values)
+                              ../../SSD1306/Release\libSSD1306.a(ssd1306.o) (_ssd1306_gddram_splash_test)
 ../../SSD1306/Release\libSSD1306.a(stringfunctions.o)
                               main.o (sprintf2)
 ../../../I2C/I2C/Release\libI2C.a(i2c.o)
                               main.o (i2cSetMaster)
-../../../Timer/Timer/Release\libTimer.a(timer.o)
-                              ../../../I2C/I2C/Release\libI2C.a(i2c.o) (timerSetMicros)
 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_udivmodqi4.o)
                               ../../SSD1306/Release\libSSD1306.a(ssd1306.o) (__udivmodqi4)
 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_divmodhi4.o)
@@ -53,6 +51,8 @@ Discarded input sections
                 0x00000000       0x4a ../../SSD1306/Release\libSSD1306.a(ssd1306.o)
  .text.ssd1306TestFont
                 0x00000000       0x4e ../../SSD1306/Release\libSSD1306.a(ssd1306.o)
+ .text.ssd1306TestSplash
+                0x00000000       0x1e ../../SSD1306/Release\libSSD1306.a(ssd1306.o)
  .text.ssd1306FillBuffer
                 0x00000000       0x10 ../../SSD1306/Release\libSSD1306.a(ssd1306.o)
  .text.ssd1306SetContrast
@@ -65,7 +65,7 @@ Discarded input sections
  .text          0x00000000        0x0 ../../SSD1306/Release\libSSD1306.a(ssd1306FlashStore.o)
  .data          0x00000000        0x0 ../../SSD1306/Release\libSSD1306.a(ssd1306FlashStore.o)
  .bss           0x00000000        0x0 ../../SSD1306/Release\libSSD1306.a(ssd1306FlashStore.o)
- .progmem.data.ssd1306_gddram_test
+ .progmem.data._ssd1306_gddram_splash_test
                 0x00000000      0x400 ../../SSD1306/Release\libSSD1306.a(ssd1306FlashStore.o)
  .text          0x00000000        0x0 ../../SSD1306/Release\libSSD1306.a(stringfunctions.o)
  .data          0x00000000        0x0 ../../SSD1306/Release\libSSD1306.a(stringfunctions.o)
@@ -78,10 +78,6 @@ Discarded input sections
  .bss           0x00000000        0x0 ../../../I2C/I2C/Release\libI2C.a(i2c.o)
  .text.i2cSetSlave
                 0x00000000       0x10 ../../../I2C/I2C/Release\libI2C.a(i2c.o)
- .text.i2cReadLastByte
-                0x00000000       0x54 ../../../I2C/I2C/Release\libI2C.a(i2c.o)
- .text.i2cReadByte
-                0x00000000       0x58 ../../../I2C/I2C/Release\libI2C.a(i2c.o)
  .text.i2cSlaveReadAck
                 0x00000000        0xa ../../../I2C/I2C/Release\libI2C.a(i2c.o)
  .text.i2cSlaveReceivedNewWriteData
@@ -92,19 +88,14 @@ Discarded input sections
                 0x00000000        0x6 ../../../I2C/I2C/Release\libI2C.a(i2c.o)
  .text.i2cSlaveSetMoreDataToSend
                 0x00000000        0x6 ../../../I2C/I2C/Release\libI2C.a(i2c.o)
- .text.i2cGetStatus
-                0x00000000        0x8 ../../../I2C/I2C/Release\libI2C.a(i2c.o)
+ .text.i2cReadByte
+                0x00000000       0x76 ../../../I2C/I2C/Release\libI2C.a(i2c.o)
+ .text.i2cReadLastByte
+                0x00000000       0x72 ../../../I2C/I2C/Release\libI2C.a(i2c.o)
  .text.i2cMasterRecieveData
-                0x00000000       0x6a ../../../I2C/I2C/Release\libI2C.a(i2c.o)
+                0x00000000       0x78 ../../../I2C/I2C/Release\libI2C.a(i2c.o)
  .text.i2cMasterWriteData
-                0x00000000       0x5c ../../../I2C/I2C/Release\libI2C.a(i2c.o)
- .text          0x00000000        0x0 ../../../Timer/Timer/Release\libTimer.a(timer.o)
- .data          0x00000000        0x0 ../../../Timer/Timer/Release\libTimer.a(timer.o)
- .bss           0x00000000        0x0 ../../../Timer/Timer/Release\libTimer.a(timer.o)
- .text.timerSetMillis
-                0x00000000       0x16 ../../../Timer/Timer/Release\libTimer.a(timer.o)
- .text.timerGetMillis
-                0x00000000        0xe ../../../Timer/Timer/Release\libTimer.a(timer.o)
+                0x00000000       0x5a ../../../I2C/I2C/Release\libI2C.a(i2c.o)
  .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_udivmodqi4.o)
  .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_udivmodqi4.o)
  .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_udivmodqi4.o)
@@ -339,7 +330,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x7da
+.text           0x00000000      0x7f2
  *(.vectors)
  .vectors       0x00000000       0x68 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/2.2.509/gcc/dev/atmega328p/avr5/crtatmega328p.o
                 0x00000000                __vector_default
@@ -424,6 +415,7 @@ END GROUP
                 0x000003ba                __vector_21
                 0x000003ba                __vector_15
                 0x000003ba                __vector_8
+                0x000003ba                __vector_14
                 0x000003ba                __vector_10
                 0x000003ba                __vector_16
                 0x000003ba                __vector_18
@@ -452,42 +444,36 @@ END GROUP
                 0x0000048c       0xce ../../SSD1306/Release\libSSD1306.a(ssd1306.o)
                 0x0000048c                ssd1306Print
  .text.__vector_24
-                0x0000055a       0xa4 ../../../I2C/I2C/Release\libI2C.a(i2c.o)
+                0x0000055a       0xac ../../../I2C/I2C/Release\libI2C.a(i2c.o)
                 0x0000055a                __vector_24
  .text.i2cSetMaster
-                0x000005fe       0x12 ../../../I2C/I2C/Release\libI2C.a(i2c.o)
-                0x000005fe                i2cSetMaster
- .text.i2cStop  0x00000610       0x42 ../../../I2C/I2C/Release\libI2C.a(i2c.o)
-                0x00000610                i2cStop
+                0x00000606       0x10 ../../../I2C/I2C/Release\libI2C.a(i2c.o)
+                0x00000606                i2cSetMaster
+ .text.i2cStop  0x00000616       0x62 ../../../I2C/I2C/Release\libI2C.a(i2c.o)
+                0x00000616                i2cStop
  .text.i2cStart
-                0x00000652       0x42 ../../../I2C/I2C/Release\libI2C.a(i2c.o)
-                0x00000652                i2cStart
+                0x00000678       0x62 ../../../I2C/I2C/Release\libI2C.a(i2c.o)
+                0x00000678                i2cStart
  .text.i2cWriteByte
-                0x00000694       0x46 ../../../I2C/I2C/Release\libI2C.a(i2c.o)
-                0x00000694                i2cWriteByte
+                0x000006da       0x66 ../../../I2C/I2C/Release\libI2C.a(i2c.o)
+                0x000006da                i2cWriteByte
+ .text.i2cGetStatus
+                0x00000740        0x8 ../../../I2C/I2C/Release\libI2C.a(i2c.o)
+                0x00000740                i2cGetStatus
  .text.i2cDelayedStart
-                0x000006da       0x6e ../../../I2C/I2C/Release\libI2C.a(i2c.o)
-                0x000006da                i2cDelayedStart
+                0x00000748       0x76 ../../../I2C/I2C/Release\libI2C.a(i2c.o)
+                0x00000748                i2cDelayedStart
  .text.i2cWrite
-                0x00000748       0x1a ../../../I2C/I2C/Release\libI2C.a(i2c.o)
-                0x00000748                i2cWrite
- .text.__vector_14
-                0x00000762       0x2e ../../../Timer/Timer/Release\libTimer.a(timer.o)
-                0x00000762                __vector_14
- .text.timerSetMicros
-                0x00000790       0x16 ../../../Timer/Timer/Release\libTimer.a(timer.o)
-                0x00000790                timerSetMicros
- .text.timerGetMicros
-                0x000007a6       0x18 ../../../Timer/Timer/Release\libTimer.a(timer.o)
-                0x000007a6                timerGetMicros
+                0x000007be       0x18 ../../../I2C/I2C/Release\libI2C.a(i2c.o)
+                0x000007be                i2cWrite
  .text.libgcc.div
-                0x000007be       0x18 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_udivmodqi4.o)
-                0x000007be                __udivmodqi4
-                0x000007d6                . = ALIGN (0x2)
+                0x000007d6       0x18 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_udivmodqi4.o)
+                0x000007d6                __udivmodqi4
+                0x000007ee                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x000007d6        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
-                0x000007d6                _exit
-                0x000007d6                exit
+ .fini9         0x000007ee        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+                0x000007ee                _exit
+                0x000007ee                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -506,11 +492,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x000007d6        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+ .fini0         0x000007ee        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x000007da                _etext = .
+                0x000007f2                _etext = .
 
-.data           0x00800100       0x24 load address 0x000007da
+.data           0x00800100       0x24 load address 0x000007f2
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -524,19 +510,16 @@ END GROUP
                 0x00800124                _edata = .
                 0x00800124                PROVIDE (__data_end, .)
 
-.bss            0x00800124      0x40a
+.bss            0x00800124      0x408
                 0x00800124                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
  .bss.ssd1306_gddram_buffer
                 0x00800124      0x400 ../../SSD1306/Release\libSSD1306.a(ssd1306.o)
                 0x00800124                ssd1306_gddram_buffer
- .bss.hangup_timer_previous_time
-                0x00800524        0x2 ../../../I2C/I2C/Release\libI2C.a(i2c.o)
-                0x00800524                hangup_timer_previous_time
- .bss.hangup_timer_current_time
-                0x00800526        0x2 ../../../I2C/I2C/Release\libI2C.a(i2c.o)
-                0x00800526                hangup_timer_current_time
+ .bss._hangup_timer
+                0x00800524        0x4 ../../../I2C/I2C/Release\libI2C.a(i2c.o)
+                0x00800524                _hangup_timer
  .bss.slave_sent_new_read_data
                 0x00800528        0x1 ../../../I2C/I2C/Release\libI2C.a(i2c.o)
                 0x00800528                slave_sent_new_read_data
@@ -549,19 +532,16 @@ END GROUP
  .bss.slave_write_data_received_buffer
                 0x0080052b        0x1 ../../../I2C/I2C/Release\libI2C.a(i2c.o)
                 0x0080052b                slave_write_data_received_buffer
- .bss.time_units
-                0x0080052c        0x2 ../../../Timer/Timer/Release\libTimer.a(timer.o)
-                0x0080052c                time_units
  *(COMMON)
-                0x0080052e                PROVIDE (__bss_end, .)
-                0x000007da                __data_load_start = LOADADDR (.data)
-                0x000007fe                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x0080052c                PROVIDE (__bss_end, .)
+                0x000007f2                __data_load_start = LOADADDR (.data)
+                0x00000816                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x0080052e        0x0
+.noinit         0x0080052c        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x0080052e                _end = .
+                0x0080052c                _end = .
                 [!provide]                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
@@ -609,7 +589,6 @@ END GROUP
  .comment       0x00000030       0x31 ../../SSD1306/Release\libSSD1306.a(ssd1306Fonts.o)
  .comment       0x00000030       0x31 ../../SSD1306/Release\libSSD1306.a(ssd1306FlashStore.o)
  .comment       0x00000030       0x31 ../../../I2C/I2C/Release\libI2C.a(i2c.o)
- .comment       0x00000030       0x31 ../../../Timer/Timer/Release\libTimer.a(timer.o)
 
 .note.gnu.avr.deviceinfo
                 0x00000000       0x40

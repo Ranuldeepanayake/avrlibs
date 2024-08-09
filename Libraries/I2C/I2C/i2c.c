@@ -24,7 +24,7 @@ volatile uint8_t slave_data_to_be_sent_buffer = 0;
 volatile bool slave_sent_new_read_data = false;
 
 //Bus hangup protection counter.
-volatile uint16_t _hangup_timer = 0;
+volatile uint32_t _hangup_timer = 0;
 
 /*
 I2C receive ISR. This ISR is entered when the I2C bus receives a byte from a master or slave. This ISR is currently used only for the two slave modes.
